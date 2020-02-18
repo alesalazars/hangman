@@ -18,6 +18,12 @@ li{
   color:transparent;
 }
 
+button, input{
+  font-size:20px;
+  padding:5px 10px;
+  margin:10px;
+}
+
 
 @media (prefers-reduced-motion: no-preference) {
   .App-logo {

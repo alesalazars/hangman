@@ -23,14 +23,16 @@ function App() {
   // Updates with messages for the user as they interact with the app.
   const [response, setResponse] = useState()
 
+  // Give winning message
+  const [youWon, setWinningMessage] = useState('')
+
   // Keeps count of the guessed letters
-  const [guessed, setGuessed] = useState(1)
+  const [guessed, setGuessed] = useState(0)
 
   // Throws a random word and creates the spaces for each letter in the DOM.
   let sort = () => {
     let random = words[Math.floor(Math.random() * words.length)];
     setRandomWord(random)
-    console.log(random)
     let aux = []
     for(let i = 0 ; i < random.length ; i++){
       aux.push(<li key={i} id={i}>{random[i]}</li>)
@@ -58,17 +60,15 @@ function App() {
           setResponse(clicksLeft)
           let checkLetter = () => {
             console.log('randomWord --> ', randomWord)
-            console.log('valueOfInput: ', valueOfInput)
             for(let j = 0 ; j < randomWord.length ; j++){
               if(valueOfInput === randomWord[j]){
-                console.log('le achunté')
                 document.getElementById(j).style.color = '#ffffff'
                 let guessedCounter = guessed + 1
                 setGuessed(guessedCounter)
                 console.log('guessed: ', guessed)
                 if(guessed === randomWord.length){
-                  let youWon = 'Ganaste!'
-                  setResponse(youWon)
+                  let youWon = 'Ganaste! la palabra es: ' + randomWord
+                  setWinningMessage(youWon)
                   setButtonAvailability(true)
                 }
               }
@@ -91,6 +91,7 @@ function App() {
     setButtonAvailability(true)
     setClicks(0)
     setResponse('')
+    setWinningMessage('')
   }
 
   return (
@@ -111,6 +112,7 @@ function App() {
             countClicks()
           }}
         >Chequea la letra</button>
+        <p>{youWon}</p>
         <p>{response}</p>
         <button onClick={() => {playAgain()}}>Jugar de nuevo</button>
 
