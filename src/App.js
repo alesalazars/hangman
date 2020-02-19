@@ -21,13 +21,13 @@ function App() {
   const [clicks, setClicks] = useState(0)
 
   // Updates with messages for the user as they interact with the app.
-  const [response, setResponse] = useState()
+  const [response, setResponse] = useState('Tienes 5 vidas para adivinar.')
 
   // Give winning message
   const [youWon, setWinningMessage] = useState('')
 
   // Keeps count of the guessed letters
-  const [guessed, setGuessed] = useState(0)
+  const [guessed, setGuessed] = useState(1)
 
   // Throws a random word and creates the spaces for each letter in the DOM.
   let sort = () => {
@@ -56,16 +56,18 @@ function App() {
     }else{
       for(let i = 0 ; i < 5 ; i++){
         if(clicks === i){
-          let clicksLeft = 'Te quedan ' + (5 - i) + ' oportunidades para adivinar!' 
+          let clicksLeft = 'Te quedan ' + (4 - i) + ' vidas!' 
           setResponse(clicksLeft)
           let checkLetter = () => {
             console.log('randomWord --> ', randomWord)
             for(let j = 0 ; j < randomWord.length ; j++){
               if(valueOfInput === randomWord[j]){
                 document.getElementById(j).style.color = '#ffffff'
+
                 let guessedCounter = guessed + 1
                 setGuessed(guessedCounter)
                 console.log('guessed: ', guessed)
+
                 if(guessed === randomWord.length){
                   let youWon = 'Ganaste! la palabra es: ' + randomWord
                   setWinningMessage(youWon)
@@ -76,7 +78,7 @@ function App() {
           }
           checkLetter()
         }else if(clicks === 5){
-          let noClicksLeft = 'Ya no quedan más oportunidades para adivinar :(' 
+          let noClicksLeft = 'Ya no quedan más vidas :(' 
           setResponse(noClicksLeft)
         }
       }
