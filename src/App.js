@@ -17,9 +17,6 @@ function App() {
   // Sets the "try word" button on disable, and updates to able when a letter is entered into the input above.
   const [buttonAvailability, setButtonAvailability] = useState(true)
 
-  // Saves the number of clicks of the "try word" button
-  const [clicks, setClicks] = useState(0)
-
   // Updates with messages for the user as they interact with the app.
   const [response, setResponse] = useState('Tienes 5 vidas para adivinar.')
 
@@ -28,6 +25,14 @@ function App() {
 
   // Keeps count of the guessed letters
   const [guessed, setGuessed] = useState(1)
+
+  // Keeps count of number of lives to guess
+  const [lives, setLives] = useState(6)
+
+  // Saves the letters that are right
+  const [rightLetters, setRightLetters] = useState([])
+
+
 
   // Throws a random word and creates the spaces for each letter in the DOM.
   let sort = () => {
@@ -48,40 +53,74 @@ function App() {
   }
 
   // Main interactions
-  let countClicks = () => {
+  let checkLetter = () => {
     if(chosenWord === undefined){
       let haveToClickSortButtonFirst = 'Debes clickear el botón "Sortear palabra" antes de hacer click aquí...'
       setResponse(haveToClickSortButtonFirst)
-      setClicks(0)
     }else{
-      for(let i = 0 ; i < 5 ; i++){
-        if(clicks === i){
-          let clicksLeft = 'Te quedan ' + (4 - i) + ' vidas!' 
-          setResponse(clicksLeft)
-          let checkLetter = () => {
-            console.log('randomWord --> ', randomWord)
-            for(let j = 0 ; j < randomWord.length ; j++){
-              if(valueOfInput === randomWord[j]){
-                document.getElementById(j).style.color = '#ffffff'
+      console.log('randomWord --> ', randomWord)
+    
 
-                let guessedCounter = guessed + 1
-                setGuessed(guessedCounter)
-                console.log('guessed: ', guessed)
+      for(let j = 0 ; j < randomWord.length ; j++){
+        console.log('recorriendo string de palabra random')
 
-                if(guessed === randomWord.length){
-                  let youWon = 'Ganaste! la palabra es: ' + randomWord
-                  setWinningMessage(youWon)
-                  setButtonAvailability(true)
-                }
+        if(rightLetters.length === 0 && valueOfInput === randomWord[j]){
+          document.getElementById(j).style.color = '#ffffff'
+
+          let arr = rightLetters
+          arr.push(valueOfInput)
+          setRightLetters(arr)
+          console.log('rightLetters', rightLetters)
+
+          let guessedCounter = guessed + 1
+          setGuessed(guessedCounter)
+          console.log('guessed: ', guessed)
+          break;
+        }else if(rightLetters.length > 0){
+          
+          for(let i = 0 ; i < rightLetters.length ; i++){
+            console.log('recorriendo lista de letras correctas')
+  
+            if(valueOfInput === randomWord[j] && valueOfInput !== rightLetters[i]){
+              document.getElementById(j).style.color = '#ffffff'
+    
+              let arr = rightLetters
+              arr.push(valueOfInput)
+              setRightLetters(arr)
+              console.log('rightLetters', rightLetters)
+    
+              let guessedCounter = guessed + 1
+              setGuessed(guessedCounter)
+              console.log('guessed: ', guessed)
+    
+              if(guessed === randomWord.length){
+                let youWon = 'Ganaste! la palabra es: ' + randomWord
+                setWinningMessage(youWon)
+                setButtonAvailability(true)
+              }
+            }else if(valueOfInput === randomWord[j] && valueOfInput === rightLetters[i]){
+              let alreadyGuessed = 'Ya ingresaste esta letra, prueba otra vez!'
+              setResponse(alreadyGuessed)
+            }else{
+              let reduceLife = lives - 1
+              console.log('lives: ', lives)
+              setLives(reduceLife)
+              let livesLeft = 'Te quedan ' + (reduceLife) + ' vidas!' 
+              setResponse(livesLeft)
+              if(lives === 0){
+                let noClicksLeft = 'Ya no quedan más vidas :(' 
+                setResponse(noClicksLeft)
               }
             }
+  
           }
-          checkLetter()
-        }else if(clicks === 5){
-          let noClicksLeft = 'Ya no quedan más vidas :(' 
-          setResponse(noClicksLeft)
+
         }
+
+
       }
+        
+
     }
   }
 
@@ -91,7 +130,6 @@ function App() {
     setChoose(null)
     setValueOfInput('')
     setButtonAvailability(true)
-    setClicks(0)
     setResponse('')
     setWinningMessage('')
   }
@@ -106,14 +144,7 @@ function App() {
         </ul>
         <p>Ingresa una letra para chequear que exista en la palabra:</p>
         <input type="text" id="letter" value={valueOfInput} onChange={(event) => {wroteInsideInput(event)}}/>
-        <button 
-          disabled={buttonAvailability}
-          onClick={ () => {
-            let clicked = clicks + 1
-            setClicks(clicked)
-            countClicks()
-          }}
-        >Chequea la letra</button>
+        <button disabled={buttonAvailability} onClick={ () => { checkLetter() }}>Chequea la letra</button>
         <p>{youWon}</p>
         <p>{response}</p>
         <button onClick={() => {playAgain()}}>Jugar de nuevo</button>
