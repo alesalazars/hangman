@@ -11,6 +11,9 @@ function App() {
   // Draws the word in the DOM, shows spaces for each letter.
   const [chosenWord, setChoose] = useState()
 
+  // Saves a copy of the random word chosen, and update removing the letters that are already correct to avoid unnecesarry iterations.
+  const [copyOfRandomWord, setCopyOfRandomWord] = useState()
+
   // Saves the value of the input when onChange is triggered.
   const [valueOfInput, setValueOfInput] = useState('')
 
@@ -40,6 +43,8 @@ function App() {
       aux.push(<li key={i} id={i}>{random[i]}</li>)
     }
     setChoose(aux)
+    let randomWordArray= random.split('')
+    setCopyOfRandomWord(randomWordArray)
   }
 
   // Gets the value of the input when onChange is triggered.
@@ -56,65 +61,80 @@ function App() {
       setResponse(haveToClickSortButtonFirst)
     }else{
       console.log('randomWord --> ', randomWord)
+      console.log('copyOfRandomWord --> ', copyOfRandomWord)
 
-      for(let j = 0 ; j < randomWord.length ; j++){
-        console.log('recorriendo string de palabra random')
+      for(let j = 0 ; j < copyOfRandomWord.length ; j++){
+        console.log('recorriendo string de palabra random como array')
 
-        if(valueOfInput === randomWord[j]){
-          console.log('la letra SI está dentro de la palabra random.')
+        if(valueOfInput === copyOfRandomWord[j]){
 
-          if(rightLetters.length === 0){
-            document.getElementById(j).style.color = '#ffffff'
-  
-            let arr = rightLetters
-            arr.push(valueOfInput)
-            setRightLetters(arr)
-            console.log('rightLetters', rightLetters)
-  
-          }else if(rightLetters.length > 0){
+          console.log('la letra coincide con un elemento de la lista')
+
+          document.getElementById(j).style.color = '#ffffff'
             
-            for(let i = 0 ; i < rightLetters.length ; i++){
-              console.log('recorriendo lista de letras correctas')
-    
-              if(valueOfInput === randomWord[j] && valueOfInput !== rightLetters[i]){
-                document.getElementById(j).style.color = '#ffffff'
-      
-                let arr = rightLetters
-                arr.push(valueOfInput)
-                setRightLetters(arr)
-                console.log('rightLetters', rightLetters)
+          let arr = rightLetters
+          arr.push(valueOfInput)
+          setRightLetters(arr)
+          console.log('rightLetters', rightLetters)
+
+          copyOfRandomWord.splice(j,1,0)
+          setCopyOfRandomWord(copyOfRandomWord)
+          console.log('copyOfRandomWord menos la letra adivinada --> ', copyOfRandomWord)
+
+
+          // if(rightLetters.length === 0){
+          //   document.getElementById(j).style.color = '#ffffff'
   
-                setResponse('')
-      
-                if(rightLetters === randomWord.length){
-                  let youWon = 'Ganaste! la palabra es: ' + randomWord
-                  setWinningMessage(youWon)
-                  setButtonAvailability(true)
-                }
-                break;
-              }else if(valueOfInput === rightLetters[i]){
-                let alreadyGuessed = 'Ya ingresaste esta letra, prueba otra vez!'
-                setResponse(alreadyGuessed)
-              }
-    
-            }
+          //   let arr = rightLetters
+          //   arr.push(valueOfInput)
+          //   setRightLetters(arr)
+          //   console.log('rightLetters', rightLetters)
   
-          }
+          // }else if(rightLetters.length > 0){
+            
+          //   for(let i = 0 ; i < rightLetters.length ; i++){
+          //     console.log('recorriendo lista de letras correctas')
+    
+          //     if(valueOfInput === rightLetters[i]){
+          //       let alreadyGuessed = 'Ya ingresaste esta letra, prueba otra vez!'
+          //       setResponse(alreadyGuessed)
+          //     }else{
+          //       document.getElementById(j).style.color = '#ffffff'
+      
+          //       let arr = rightLetters
+          //       arr.push(valueOfInput)
+          //       setRightLetters(arr)
+          //       console.log('rightLetters', rightLetters)
+  
+          //       setResponse('')
+      
+          //       if(rightLetters.length === randomWord.length){
+          //         let youWon = 'Ganaste! la palabra es: ' + randomWord
+          //         setWinningMessage(youWon)
+          //         setButtonAvailability(true)
+          //       }
+          //     }
+    
+          //   }
+  
+          // }
+
 
         }else{
+          console.log('la letra NO coincide')
+        }
+
+
           if(lives >= 1){
-            console.log('la letra NO está en la palabra random, se quita 1 vida.')
             let reduceLife = lives - 1
-            console.log('lives: ', lives)
             setLives(reduceLife)
             let livesLeft = 'Te quedan ' + (reduceLife) + ' vidas!' 
             setResponse(livesLeft)
-          }
-          if(lives === 1){
+            console.log('lives: ', lives)
+          }else if(lives === 1){
             let noClicksLeft = 'Ya no quedan más vidas :(' 
             setResponse(noClicksLeft)
           }
-        }
 
       }
 
