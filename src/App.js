@@ -3,7 +3,7 @@ import './App.css';
 
 function App() {
 
-  const words = ['casa','gato','mesa']
+  const words = ['casa']
 
   // Saves the random word chosen.
   const [randomWord, setRandomWord] = useState()
@@ -23,11 +23,8 @@ function App() {
   // Give winning message
   const [youWon, setWinningMessage] = useState('')
 
-  // Keeps count of the guessed letters
-  const [guessed, setGuessed] = useState(1)
-
   // Keeps count of number of lives to guess
-  const [lives, setLives] = useState(6)
+  const [lives, setLives] = useState(5)
 
   // Saves the letters that are right
   const [rightLetters, setRightLetters] = useState([])
@@ -59,67 +56,67 @@ function App() {
       setResponse(haveToClickSortButtonFirst)
     }else{
       console.log('randomWord --> ', randomWord)
-    
 
       for(let j = 0 ; j < randomWord.length ; j++){
         console.log('recorriendo string de palabra random')
 
-        if(rightLetters.length === 0 && valueOfInput === randomWord[j]){
-          document.getElementById(j).style.color = '#ffffff'
+        if(valueOfInput === randomWord[j]){
+          console.log('la letra SI está dentro de la palabra random.')
 
-          let arr = rightLetters
-          arr.push(valueOfInput)
-          setRightLetters(arr)
-          console.log('rightLetters', rightLetters)
-
-          let guessedCounter = guessed + 1
-          setGuessed(guessedCounter)
-          console.log('guessed: ', guessed)
-          break;
-        }else if(rightLetters.length > 0){
-          
-          for(let i = 0 ; i < rightLetters.length ; i++){
-            console.log('recorriendo lista de letras correctas')
+          if(rightLetters.length === 0){
+            document.getElementById(j).style.color = '#ffffff'
   
-            if(valueOfInput === randomWord[j] && valueOfInput !== rightLetters[i]){
-              document.getElementById(j).style.color = '#ffffff'
+            let arr = rightLetters
+            arr.push(valueOfInput)
+            setRightLetters(arr)
+            console.log('rightLetters', rightLetters)
+  
+          }else if(rightLetters.length > 0){
+            
+            for(let i = 0 ; i < rightLetters.length ; i++){
+              console.log('recorriendo lista de letras correctas')
     
-              let arr = rightLetters
-              arr.push(valueOfInput)
-              setRightLetters(arr)
-              console.log('rightLetters', rightLetters)
-    
-              let guessedCounter = guessed + 1
-              setGuessed(guessedCounter)
-              console.log('guessed: ', guessed)
-    
-              if(guessed === randomWord.length){
-                let youWon = 'Ganaste! la palabra es: ' + randomWord
-                setWinningMessage(youWon)
-                setButtonAvailability(true)
+              if(valueOfInput === randomWord[j] && valueOfInput !== rightLetters[i]){
+                document.getElementById(j).style.color = '#ffffff'
+      
+                let arr = rightLetters
+                arr.push(valueOfInput)
+                setRightLetters(arr)
+                console.log('rightLetters', rightLetters)
+  
+                setResponse('')
+      
+                if(rightLetters === randomWord.length){
+                  let youWon = 'Ganaste! la palabra es: ' + randomWord
+                  setWinningMessage(youWon)
+                  setButtonAvailability(true)
+                }
+                break;
+              }else if(valueOfInput === rightLetters[i]){
+                let alreadyGuessed = 'Ya ingresaste esta letra, prueba otra vez!'
+                setResponse(alreadyGuessed)
               }
-            }else if(valueOfInput === randomWord[j] && valueOfInput === rightLetters[i]){
-              let alreadyGuessed = 'Ya ingresaste esta letra, prueba otra vez!'
-              setResponse(alreadyGuessed)
-            }else{
-              let reduceLife = lives - 1
-              console.log('lives: ', lives)
-              setLives(reduceLife)
-              let livesLeft = 'Te quedan ' + (reduceLife) + ' vidas!' 
-              setResponse(livesLeft)
-              if(lives === 0){
-                let noClicksLeft = 'Ya no quedan más vidas :(' 
-                setResponse(noClicksLeft)
-              }
+    
             }
   
           }
 
+        }else{
+          if(lives >= 1){
+            console.log('la letra NO está en la palabra random, se quita 1 vida.')
+            let reduceLife = lives - 1
+            console.log('lives: ', lives)
+            setLives(reduceLife)
+            let livesLeft = 'Te quedan ' + (reduceLife) + ' vidas!' 
+            setResponse(livesLeft)
+          }
+          if(lives === 1){
+            let noClicksLeft = 'Ya no quedan más vidas :(' 
+            setResponse(noClicksLeft)
+          }
         }
 
-
       }
-        
 
     }
   }
