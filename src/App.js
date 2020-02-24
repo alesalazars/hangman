@@ -32,6 +32,9 @@ function App() {
   // Saves the letters that are right
   const [rightLetters, setRightLetters] = useState([])
 
+  // Saves the wrong letter attempts
+  const [wrongLetters, setWrongLetters] = useState([])
+
 
 
   // Throws a random word and creates the spaces for each letter in the DOM.
@@ -72,9 +75,9 @@ function App() {
 
           document.getElementById(j).style.color = '#ffffff'
             
-          let arr = rightLetters
-          arr.push(valueOfInput)
-          setRightLetters(arr)
+          let arrRights = rightLetters
+          arrRights.push(valueOfInput)
+          setRightLetters(arrRights)
           console.log('rightLetters', rightLetters)
 
           copyOfRandomWord.splice(j,1,0)
@@ -85,10 +88,10 @@ function App() {
           // if(rightLetters.length === 0){
           //   document.getElementById(j).style.color = '#ffffff'
   
-          //   let arr = rightLetters
-          //   arr.push(valueOfInput)
-          //   setRightLetters(arr)
-          //   console.log('rightLetters', rightLetters)
+          // let arrRights = rightLetters
+          // arrRights.push(valueOfInput)
+          // setRightLetters(arrRights)
+          // console.log('rightLetters', rightLetters)
   
           // }else if(rightLetters.length > 0){
             
@@ -101,18 +104,13 @@ function App() {
           //     }else{
           //       document.getElementById(j).style.color = '#ffffff'
       
-          //       let arr = rightLetters
-          //       arr.push(valueOfInput)
-          //       setRightLetters(arr)
-          //       console.log('rightLetters', rightLetters)
+              // let arrRights = rightLetters
+              // arrRights.push(valueOfInput)
+              // setRightLetters(arrRights)
+              // console.log('rightLetters', rightLetters)
   
           //       setResponse('')
       
-          //       if(rightLetters.length === randomWord.length){
-          //         let youWon = 'Ganaste! la palabra es: ' + randomWord
-          //         setWinningMessage(youWon)
-          //         setButtonAvailability(true)
-          //       }
           //     }
     
           //   }
@@ -121,21 +119,36 @@ function App() {
 
 
         }else{
-          console.log('la letra NO coincide')
+          console.log('la letra NO coincide, copyOfRandomWord --> ', copyOfRandomWord)
+
+          let arrWrongs = wrongLetters
+          arrWrongs.push(valueOfInput)
+          setWrongLetters(arrWrongs)
+          console.log('wrongLetters', wrongLetters)
+          
         }
 
+        setWrongLetters([])
 
-          if(lives >= 1){
-            let reduceLife = lives - 1
-            setLives(reduceLife)
-            let livesLeft = 'Te quedan ' + (reduceLife) + ' vidas!' 
-            setResponse(livesLeft)
-            console.log('lives: ', lives)
-          }else if(lives === 1){
-            let noClicksLeft = 'Ya no quedan más vidas :(' 
-            setResponse(noClicksLeft)
-          }
+      }
 
+      if(wrongLetters.length === copyOfRandomWord.length){
+        if(lives >= 1){
+          let reduceLife = lives - 1
+          setLives(reduceLife)
+          let livesLeft = 'Te quedan ' + (reduceLife) + ' vidas!' 
+          setResponse(livesLeft)
+          console.log('lives: ', lives)
+        }else if(lives === 1){
+          let noClicksLeft = 'Ya no quedan más vidas :(' 
+          setResponse(noClicksLeft)
+        }
+      }
+
+      if(rightLetters.length === copyOfRandomWord.length){
+        let youWon = 'Ganaste! la palabra es: ' + randomWord
+        setWinningMessage(youWon)
+        setButtonAvailability(true)
       }
 
     }
