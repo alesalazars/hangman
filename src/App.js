@@ -3,7 +3,7 @@ import './App.css';
 
 function App() {
 
-  const words = ['casa']
+  const words = ['casa', 'gato', 'mesa']
 
   // Saves the random word chosen.
   const [randomWord, setRandomWord] = useState()
@@ -25,6 +25,9 @@ function App() {
 
   // Give winning message
   const [youWon, setWinningMessage] = useState('')
+
+  // Give message when the letter was already tried
+  const [tried, setTried] = useState('')
 
   // Keeps count of number of lives to guess
   const [lives, setLives] = useState(5)
@@ -67,17 +70,6 @@ function App() {
       console.log('copyOfRandomWord --> ', copyOfRandomWord)
 
 
-      for(let j = 0 ; j < rightLetters.length ; j++){
-        console.log('recorriendo lista de letras correctas')
-        if(valueOfInput === rightLetters[j]){
-          console.log('LA LETRA YA LA PROBÉ ANTES!!!!')
-          let alreadyGuessed = 'Ya ingresaste esta letra, prueba otra vez!'
-          setResponse(alreadyGuessed)
-          console.log('response:::', response)
-        }
-        break
-      }
-
       for(let i = 0 ; i < copyOfRandomWord.length ; i++){
         console.log('recorriendo string de palabra random como array')
 
@@ -111,16 +103,38 @@ function App() {
       }
 
       if(wrongLetters.length === copyOfRandomWord.length){
-        if(lives >= 1){
-          let reduceLife = lives - 1
-          setLives(reduceLife)
-          let livesLeft = 'Te quedan ' + (reduceLife) + ' vidas!' 
-          setResponse(livesLeft)
-          console.log('lives: ', lives)
-        }else if(lives === 1){
-          let noClicksLeft = 'Ya no quedan más vidas :(' 
-          setResponse(noClicksLeft)
+
+        if(rightLetters.length > 0){
+          setTried('')
+          for(let j = 0 ; j < rightLetters.length ; j++){
+            console.log('recorriendo lista de letras correctas')
+            if(valueOfInput === rightLetters[j]){
+              console.log('LA LETRA YA LA PROBÉ ANTES!!!!')
+              let alreadyGuessed = 'Ya ingresaste esta letra, prueba otra vez!'
+              setTried(alreadyGuessed)
+              console.log('tried:::', tried)
+            }else if(valueOfInput !== rightLetters[j] && lives >= 1){
+              let reduceLife = lives - 1
+              setLives(reduceLife)
+              let livesLeft = 'Te quedan ' + (reduceLife) + ' vidas!' 
+              setResponse(livesLeft)
+              console.log('lives: ', lives)
+            }else if(valueOfInput !== rightLetters[j] && lives === 1){
+              let noClicksLeft = 'Ya no quedan más vidas :(' 
+              setResponse(noClicksLeft)
+            }
+            // break
+          }
+        }else{
+          if(lives >= 1){
+            let reduceLife = lives - 1
+            setLives(reduceLife)
+            let livesLeft = 'Te quedan ' + (reduceLife) + ' vidas!' 
+            setResponse(livesLeft)
+            console.log('lives: ', lives)
+          }
         }
+        
       }
 
       if(rightLetters.length === copyOfRandomWord.length){
@@ -134,12 +148,17 @@ function App() {
 
   // Restart the game
   let playAgain = () => {
-    setRandomWord(null)
-    setChoose(null)
+    setRandomWord()
+    setChoose()
+    setCopyOfRandomWord()
     setValueOfInput('')
     setButtonAvailability(true)
-    setResponse('')
+    setResponse('Tienes 5 vidas para adivinar.')
     setWinningMessage('')
+    setTried('')
+    setLives(5)
+    setRightLetters([])
+    setWrongLetters([])
   }
 
   return (
@@ -154,6 +173,7 @@ function App() {
         <input type="text" id="letter" value={valueOfInput} onChange={(event) => {wroteInsideInput(event)}}/>
         <button disabled={buttonAvailability} onClick={ () => { checkLetter() }}>Chequea la letra</button>
         <p>{youWon}</p>
+        <p>{tried}</p>
         <p>{response}</p>
         <button onClick={() => {playAgain()}}>Jugar de nuevo</button>
 
