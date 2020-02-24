@@ -24,6 +24,13 @@ button, input{
   margin:10px;
 }
 
+#wrongLettersBox{
+  border:1px solid #fff;
+  padding:10px;
+  text-align: center;
+  text-transform: uppercase;
+}
+
 
 @media (prefers-reduced-motion: no-preference) {
   .App-logo {

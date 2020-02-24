@@ -3,7 +3,7 @@ import './App.css';
 
 function App() {
 
-  const words = ['casa', 'gato', 'mesa']
+  const words = ['sol', 'nutria', 'sunny']
 
   // Saves the random word chosen.
   const [randomWord, setRandomWord] = useState()
@@ -19,6 +19,9 @@ function App() {
 
   // Sets the "try word" button on disable, and updates to able when a letter is entered into the input above.
   const [buttonAvailability, setButtonAvailability] = useState(true)
+
+  // If true it means the game is over and the input is disabled
+  const [inputAvailability, setInputAvailability] = useState(false)
 
   // Updates with messages for the user as they interact with the app.
   const [response, setResponse] = useState('Tienes 5 vidas para adivinar.')
@@ -38,6 +41,12 @@ function App() {
   // Saves the wrong letter attempts
   const [wrongLetters, setWrongLetters] = useState([])
 
+  // Puts the wrong letters in a box for the player to see
+  const [wrongLettersInBox, setWrongLettersInBox] = useState()
+
+  // Saves a copy of the wrongLetters array to be processed into the box that shows mistaken letters
+  const [storagingOfWrongLetters, setStoragingOfWrongLetters] = useState()
+
 
 
   // Throws a random word and creates the spaces for each letter in the DOM.
@@ -55,10 +64,42 @@ function App() {
 
   // Gets the value of the input when onChange is triggered.
   let wroteInsideInput = (event) => {
-    setButtonAvailability(false)
-    let tryLetter = event.target.value
-    setValueOfInput(tryLetter)
+    document.getElementById("letter").maxLength = "1";
+    if(inputAvailability === false){
+      setButtonAvailability(false)
+      let tryLetter = event.target.value.toLowerCase()
+      setValueOfInput(tryLetter)
+    }
   }
+
+  // Remove a life
+  let takeALife = () => {
+    let reduceLife = lives - 1
+    setLives(reduceLife)
+    let livesLeft = 'Te quedan ' + (reduceLife) + ' vidas!' 
+    setResponse(livesLeft)
+    console.log('lives: ', lives)
+  }
+
+  // No lives left
+  let zeroLives = () => {
+    let noClicksLeft = 'Ya no quedan más vidas :(' 
+    setResponse(noClicksLeft)
+    setButtonAvailability(true)
+    setInputAvailability(true)
+  }
+
+  // Puts the wrong letters inside a box for the player to see
+  let putWrongLetterInBox = () => {
+    console.log('wrongLetters ::::::', wrongLetters)
+
+    console.log('storagingOfWrongLetters ::::::', storagingOfWrongLetters)
+
+    let wrongLettersWithoutDuplicates = [...new Set(storagingOfWrongLetters)]
+    let wrongLettersIntoString = wrongLettersWithoutDuplicates.join(', ')
+    setWrongLettersInBox(wrongLettersIntoString)
+  }
+
 
   // Main interactions
   let checkLetter = () => {
@@ -95,6 +136,9 @@ function App() {
           arrWrongs.push(valueOfInput)
           setWrongLetters(arrWrongs)
           console.log('wrongLetters', wrongLetters)
+
+          let copyOfWrongLetters = wrongLetters
+          setStoragingOfWrongLetters(copyOfWrongLetters)
           
         }
 
@@ -113,25 +157,17 @@ function App() {
               let alreadyGuessed = 'Ya ingresaste esta letra, prueba otra vez!'
               setTried(alreadyGuessed)
               console.log('tried:::', tried)
-            }else if(valueOfInput !== rightLetters[j] && lives >= 1){
-              let reduceLife = lives - 1
-              setLives(reduceLife)
-              let livesLeft = 'Te quedan ' + (reduceLife) + ' vidas!' 
-              setResponse(livesLeft)
-              console.log('lives: ', lives)
+            }else if(valueOfInput !== rightLetters[j] && lives >= 2){
+              takeALife()
             }else if(valueOfInput !== rightLetters[j] && lives === 1){
-              let noClicksLeft = 'Ya no quedan más vidas :(' 
-              setResponse(noClicksLeft)
+              zeroLives()
             }
-            // break
           }
         }else{
-          if(lives >= 1){
-            let reduceLife = lives - 1
-            setLives(reduceLife)
-            let livesLeft = 'Te quedan ' + (reduceLife) + ' vidas!' 
-            setResponse(livesLeft)
-            console.log('lives: ', lives)
+          if(lives >= 2){
+            takeALife()
+          }else if(lives === 1){
+            zeroLives()
           }
         }
         
@@ -143,6 +179,8 @@ function App() {
         setButtonAvailability(true)
       }
 
+      setValueOfInput('')
+
     }
   }
 
@@ -153,6 +191,7 @@ function App() {
     setCopyOfRandomWord()
     setValueOfInput('')
     setButtonAvailability(true)
+    setInputAvailability(false)
     setResponse('Tienes 5 vidas para adivinar.')
     setWinningMessage('')
     setTried('')
@@ -170,11 +209,17 @@ function App() {
           {chosenWord}
         </ul>
         <p>Ingresa una letra para chequear que exista en la palabra:</p>
-        <input type="text" id="letter" value={valueOfInput} onChange={(event) => {wroteInsideInput(event)}}/>
-        <button disabled={buttonAvailability} onClick={ () => { checkLetter() }}>Chequea la letra</button>
+        <input disabled={inputAvailability} type="text" id="letter" value={valueOfInput} onChange={(event) => {wroteInsideInput(event)}}/>
+        <button 
+          disabled={buttonAvailability} 
+          onClick={ () => { 
+            checkLetter()
+            putWrongLetterInBox()
+          }}>Chequea la letra</button>
         <p>{youWon}</p>
         <p>{tried}</p>
         <p>{response}</p>
+        <div id="wrongLettersBox">{wrongLettersInBox}</div>
         <button onClick={() => {playAgain()}}>Jugar de nuevo</button>
 
       </header>
