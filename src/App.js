@@ -66,57 +66,35 @@ function App() {
       console.log('randomWord --> ', randomWord)
       console.log('copyOfRandomWord --> ', copyOfRandomWord)
 
-      for(let j = 0 ; j < copyOfRandomWord.length ; j++){
+
+      for(let j = 0 ; j < rightLetters.length ; j++){
+        console.log('recorriendo lista de letras correctas')
+        if(valueOfInput === rightLetters[j]){
+          console.log('LA LETRA YA LA PROBÉ ANTES!!!!')
+          let alreadyGuessed = 'Ya ingresaste esta letra, prueba otra vez!'
+          setResponse(alreadyGuessed)
+          console.log('response:::', response)
+        }
+        break
+      }
+
+      for(let i = 0 ; i < copyOfRandomWord.length ; i++){
         console.log('recorriendo string de palabra random como array')
 
-        if(valueOfInput === copyOfRandomWord[j]){
+        if(valueOfInput === copyOfRandomWord[i]){
 
           console.log('la letra coincide con un elemento de la lista')
 
-          document.getElementById(j).style.color = '#ffffff'
+          document.getElementById(i).style.color = '#ffffff'
             
           let arrRights = rightLetters
           arrRights.push(valueOfInput)
           setRightLetters(arrRights)
           console.log('rightLetters', rightLetters)
 
-          copyOfRandomWord.splice(j,1,0)
+          copyOfRandomWord.splice(i,1,0)
           setCopyOfRandomWord(copyOfRandomWord)
           console.log('copyOfRandomWord menos la letra adivinada --> ', copyOfRandomWord)
-
-
-          // if(rightLetters.length === 0){
-          //   document.getElementById(j).style.color = '#ffffff'
-  
-          // let arrRights = rightLetters
-          // arrRights.push(valueOfInput)
-          // setRightLetters(arrRights)
-          // console.log('rightLetters', rightLetters)
-  
-          // }else if(rightLetters.length > 0){
-            
-          //   for(let i = 0 ; i < rightLetters.length ; i++){
-          //     console.log('recorriendo lista de letras correctas')
-    
-          //     if(valueOfInput === rightLetters[i]){
-          //       let alreadyGuessed = 'Ya ingresaste esta letra, prueba otra vez!'
-          //       setResponse(alreadyGuessed)
-          //     }else{
-          //       document.getElementById(j).style.color = '#ffffff'
-      
-              // let arrRights = rightLetters
-              // arrRights.push(valueOfInput)
-              // setRightLetters(arrRights)
-              // console.log('rightLetters', rightLetters)
-  
-          //       setResponse('')
-      
-          //     }
-    
-          //   }
-  
-          // }
-
 
         }else{
           console.log('la letra NO coincide, copyOfRandomWord --> ', copyOfRandomWord)
