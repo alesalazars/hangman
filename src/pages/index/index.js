@@ -44,11 +44,11 @@ const Index = () => {
   // Saves the wrong letter attempts
   const [wrongLetters, setWrongLetters] = useState([])
 
+  // Saves a copy of the wrongLetters array to be processed into the box that shows mistaken letters
+  const [copyOfWrongLetters, setCopyOfWrongLetters] = useState([])
+
   // Puts the wrong letters in a box for the player to see
   const [wrongLettersInBox, setWrongLettersInBox] = useState()
-
-  // Saves a copy of the wrongLetters array to be processed into the box that shows mistaken letters
-  const [storagingOfWrongLetters, setStoragingOfWrongLetters] = useState()
 
   return(
     <div className="index">
@@ -76,8 +76,7 @@ const Index = () => {
         <Button 
           disabled={buttonAvailability} 
           onClick={ () => {
-            checkLetter(chosenWord, setResponse, randomWord, copyOfRandomWord, valueOfInput, setRightLetters, rightLetters, setCopyOfRandomWord, wrongLetters, setWrongLetters, setStoragingOfWrongLetters, setTried, lives, setWinningMessage, setButtonAvailability, setValueOfInput, tried, setInputAvailability, setLives) 
-            putWrongLetterInBox(storagingOfWrongLetters, setWrongLettersInBox)
+            checkLetter(chosenWord, setResponse, randomWord, copyOfRandomWord, valueOfInput, setRightLetters, rightLetters, setCopyOfRandomWord, wrongLetters, setWrongLetters, setCopyOfWrongLetters, setTried, lives, setWinningMessage, setButtonAvailability, setValueOfInput, tried, setInputAvailability, setLives, setWrongLettersInBox, copyOfWrongLetters, wrongLettersInBox)
           }}
           text={'Chequea la letra'}
         />
@@ -89,7 +88,7 @@ const Index = () => {
         <div id="wrongLettersBox">{wrongLettersInBox}</div>
 
         <Button 
-          onClick={() => {playAgain(setRandomWord, setChoose, setCopyOfRandomWord, setValueOfInput, setButtonAvailability, setInputAvailability, setResponse, setWinningMessage, setTried, setLives, setRightLetters, setWrongLetters)}} 
+          onClick={() => {playAgain(setRandomWord, setChoose, setCopyOfRandomWord, setValueOfInput, setButtonAvailability, setInputAvailability, setResponse, setWinningMessage, setTried, setLives, setRightLetters, setWrongLetters, setCopyOfWrongLetters, setWrongLettersInBox)}} 
           text={'Jugar de nuevo'}/>
 
       </header>

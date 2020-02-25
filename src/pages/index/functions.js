@@ -43,18 +43,24 @@ const zeroLives = (setResponse, setButtonAvailability, setInputAvailability) => 
   setInputAvailability(true)
 }
 
-// Puts the wrong letters inside a box for the player to see
-const putWrongLetterInBox = (storagingOfWrongLetters, setWrongLettersInBox) => {
-  console.log('storagingOfWrongLetters ::::::', storagingOfWrongLetters)
+// Put wrong letter inside box at the bottom
+const putWrongInBox = (copyOfWrongLetters, valueOfInput, setCopyOfWrongLetters, setWrongLettersInBox, wrongLettersInBox) => {
+  let auxArr = copyOfWrongLetters
+  auxArr.push(valueOfInput)
+  setCopyOfWrongLetters(auxArr)
+  console.log('copyOfWrongLetters ::::::', copyOfWrongLetters)
 
-  let wrongLettersWithoutDuplicates = [...new Set(storagingOfWrongLetters)]
+  let wrongLettersWithoutDuplicates = [...new Set(copyOfWrongLetters)]
+  console.log('wrongLettersWithoutDuplicates (ARRAY FILTRADO SIN DUPLICADOS)=====>', wrongLettersWithoutDuplicates)
   let wrongLettersIntoString = wrongLettersWithoutDuplicates.join(', ')
+  console.log('wrongLettersIntoString (LETRAS MALAS UNIDAS POR COMAS)', wrongLettersIntoString)
   setWrongLettersInBox(wrongLettersIntoString)
+  console.log('wrongLettersInBox : =======> ', wrongLettersInBox)
 }
 
 
 // Main interactions
-const checkLetter = (chosenWord, setResponse, randomWord, copyOfRandomWord, valueOfInput, setRightLetters, rightLetters, setCopyOfRandomWord, wrongLetters, setWrongLetters, setStoragingOfWrongLetters, setTried, lives, setWinningMessage, setButtonAvailability, setValueOfInput, tried, setInputAvailability, setLives) => {
+const checkLetter = (chosenWord, setResponse, randomWord, copyOfRandomWord, valueOfInput, setRightLetters, rightLetters, setCopyOfRandomWord, wrongLetters, setWrongLetters, setCopyOfWrongLetters, setTried, lives, setWinningMessage, setButtonAvailability, setValueOfInput, tried, setInputAvailability, setLives, setWrongLettersInBox, copyOfWrongLetters, wrongLettersInBox) => {
   if(chosenWord === undefined){
     let haveToClickSortButtonFirst = 'Debes clickear el botón "Sortear palabra" antes de hacer click aquí...'
     setResponse(haveToClickSortButtonFirst)
@@ -88,10 +94,6 @@ const checkLetter = (chosenWord, setResponse, randomWord, copyOfRandomWord, valu
         arrWrongs.push(valueOfInput)
         setWrongLetters(arrWrongs)
         console.log('wrongLetters', wrongLetters)
-
-        let copyOfWrongLetters = wrongLetters
-        setStoragingOfWrongLetters(copyOfWrongLetters)
-        
       }
 
       setWrongLetters([])
@@ -103,23 +105,28 @@ const checkLetter = (chosenWord, setResponse, randomWord, copyOfRandomWord, valu
       if(rightLetters.length > 0){
         setTried('')
         for(let j = 0 ; j < rightLetters.length ; j++){
-          console.log('recorriendo lista de letras correctas')
+          console.log('recorriendo lista de letras correctas:', rightLetters)
           if(valueOfInput === rightLetters[j]){
             console.log('LA LETRA YA LA PROBÉ ANTES!!!!')
             let alreadyGuessed = 'Ya ingresaste esta letra, prueba otra vez!'
             setTried(alreadyGuessed)
             console.log('tried:::', tried)
           }else if(valueOfInput !== rightLetters[j] && lives >= 2){
-            takeALife(lives, setLives, setResponse)
+            console.log('entré acá')
+            takeALife(lives, setLives, setResponse, copyOfWrongLetters, valueOfInput, setCopyOfWrongLetters, setWrongLettersInBox, wrongLettersInBox)
+            putWrongInBox(copyOfWrongLetters, valueOfInput, setCopyOfWrongLetters, setWrongLettersInBox, wrongLettersInBox)
           }else if(valueOfInput !== rightLetters[j] && lives === 1){
             zeroLives(setResponse, setButtonAvailability, setInputAvailability)
+            putWrongInBox(copyOfWrongLetters, valueOfInput, setCopyOfWrongLetters, setWrongLettersInBox, wrongLettersInBox)
           }
         }
       }else{
         if(lives >= 2){
-          takeALife(lives, setLives, setResponse)
+          takeALife(lives, setLives, setResponse, copyOfWrongLetters, valueOfInput, setCopyOfWrongLetters, setWrongLettersInBox, wrongLettersInBox)
+          putWrongInBox(copyOfWrongLetters, valueOfInput, setCopyOfWrongLetters, setWrongLettersInBox, wrongLettersInBox)
         }else if(lives === 1){
           zeroLives(setResponse, setButtonAvailability, setInputAvailability)
+          putWrongInBox(copyOfWrongLetters, valueOfInput, setCopyOfWrongLetters, setWrongLettersInBox, wrongLettersInBox)
         }
       }
       
@@ -129,6 +136,7 @@ const checkLetter = (chosenWord, setResponse, randomWord, copyOfRandomWord, valu
       let youWon = 'Ganaste! la palabra es: ' + randomWord
       setWinningMessage(youWon)
       setButtonAvailability(true)
+      setInputAvailability(true)
     }
 
     setValueOfInput('')
@@ -137,7 +145,7 @@ const checkLetter = (chosenWord, setResponse, randomWord, copyOfRandomWord, valu
 }
 
 // Restart the game
-const playAgain = (setRandomWord, setChoose, setCopyOfRandomWord, setValueOfInput, setButtonAvailability, setInputAvailability, setResponse, setWinningMessage, setTried, setLives, setRightLetters, setWrongLetters) => {
+const playAgain = (setRandomWord, setChoose, setCopyOfRandomWord, setValueOfInput, setButtonAvailability, setInputAvailability, setResponse, setWinningMessage, setTried, setLives, setRightLetters, setWrongLetters, setCopyOfWrongLetters, setWrongLettersInBox) => {
   setRandomWord()
   setChoose()
   setCopyOfRandomWord()
@@ -150,7 +158,9 @@ const playAgain = (setRandomWord, setChoose, setCopyOfRandomWord, setValueOfInpu
   setLives(5)
   setRightLetters([])
   setWrongLetters([])
+  setCopyOfWrongLetters([])
+  setWrongLettersInBox()
 }
 
 
-export { sort, wroteInsideInput, checkLetter, putWrongLetterInBox, playAgain };
+export { sort, wroteInsideInput, checkLetter, playAgain };
