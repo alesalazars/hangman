@@ -1,17 +1,20 @@
 import React from 'react';
+import './index.css';
 
 
 const words = ['sol', 'nutria', 'sunny']
 
 // Throws a random word and creates the spaces for each letter in the DOM.
-const sort = (setRandomWord, setChoose, setCopyOfRandomWord) => {
+const sort = (setRandomWord, setChoose, setCopyOfRandomWord, letterPaint) => {
   let random = words[Math.floor(Math.random() * words.length)];
   setRandomWord(random)
   let aux = []
   for(let i = 0 ; i < random.length ; i++){
-    aux.push(<li key={i} id={i}>{random[i]}</li>)
+    // aux.push(<li key={i} id={i} className={letterPaint === true ? 'isGuessed' : 'notGuessed'}>{random[i]}</li>)
+    aux.push(<li key={i} id={i} className={letterPaint}>{random[i]}</li>)
   }
   setChoose(aux)
+  console.log('AUX', aux)
   let randomWordArray= random.split('')
   setCopyOfRandomWord(randomWordArray)
 }
@@ -60,7 +63,7 @@ const putWrongInBox = (copyOfWrongLetters, valueOfInput, setCopyOfWrongLetters, 
 
 
 // Main interactions
-const checkLetter = (chosenWord, setResponse, randomWord, copyOfRandomWord, valueOfInput, setRightLetters, rightLetters, setCopyOfRandomWord, wrongLetters, setWrongLetters, setCopyOfWrongLetters, setTried, lives, setWinningMessage, setButtonAvailability, setValueOfInput, tried, setInputAvailability, setLives, setWrongLettersInBox, copyOfWrongLetters, wrongLettersInBox) => {
+const checkLetter = (chosenWord, setResponse, randomWord, copyOfRandomWord, valueOfInput, setRightLetters, rightLetters, setCopyOfRandomWord, wrongLetters, setWrongLetters, setCopyOfWrongLetters, setTried, lives, setWinningMessage, setButtonAvailability, setValueOfInput, tried, setInputAvailability, setLives, setWrongLettersInBox, copyOfWrongLetters, wrongLettersInBox, setLetterPaint, letterPaint) => {
   if(chosenWord === undefined){
     let haveToClickSortButtonFirst = 'Debes clickear el botón "Sortear palabra" antes de hacer click aquí...'
     setResponse(haveToClickSortButtonFirst)
@@ -77,7 +80,20 @@ const checkLetter = (chosenWord, setResponse, randomWord, copyOfRandomWord, valu
   
           console.log('la letra coincide con un elemento de la lista')
   
-          document.getElementById(i).style.color = '#ffffff'
+          for(let p = 0 ; p < chosenWord.length ; p++){
+            console.log('copyOfRandomWord[i]: ', copyOfRandomWord[i])
+            console.log('chosenWord[p]: ', chosenWord[p])
+            console.log('chosenWord[p].children: ', chosenWord[p].props.children)
+            console.log('chosenWord[p].className: ', chosenWord[p].props.className)
+
+            if(copyOfRandomWord[i] === chosenWord[p].props.children){
+              let getLi = chosenWord[p].props.className
+              getLi = 'isGuessed'
+              setLetterPaint(getLi)
+              console.log('letterPaint: ', letterPaint)
+            }
+          }
+          // document.getElementById(i).style.color = '#ffffff'
             
           let arrRights = rightLetters
           arrRights.push(valueOfInput)

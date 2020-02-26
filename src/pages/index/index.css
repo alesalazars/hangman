@@ -25,7 +25,7 @@ body {
   cursor:pointer;
 }
 
-
+ul{padding: 0;}
 li{
   display: inline-block;
   font-size:24px;
@@ -34,8 +34,11 @@ li{
   margin: 0 10px;
   border-bottom:1px solid #fff;
   width: 20px;
-  color:transparent;
+  /* color:transparent; */
 }
+
+.notGuessed{color:transparent;}
+.isGuessed{color:#fff;}
 
 
 input{

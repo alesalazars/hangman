@@ -51,13 +51,16 @@ const Index = () => {
   // Puts the wrong letters in a box for the player to see
   const [wrongLettersInBox, setWrongLettersInBox] = useState()
 
+  // to color the letters that are right
+  const [letterPaint, setLetterPaint] = useState('notGuessed')
+
   return(
     <div className="index">
       {console.log('renderizando')}
       <header className="App-header">
 
         <Button 
-          onClick={ () => {sort(setRandomWord, setChoose, setCopyOfRandomWord)} } 
+          onClick={ () => {sort(setRandomWord, setChoose, setCopyOfRandomWord, letterPaint)} } 
           text={'Sortear palabra'}/>
 
         <ul id="letters">
@@ -77,7 +80,7 @@ const Index = () => {
         <Button 
           disabled={buttonAvailability} 
           onClick={ () => {
-            checkLetter(chosenWord, setResponse, randomWord, copyOfRandomWord, valueOfInput, setRightLetters, rightLetters, setCopyOfRandomWord, wrongLetters, setWrongLetters, setCopyOfWrongLetters, setTried, lives, setWinningMessage, setButtonAvailability, setValueOfInput, tried, setInputAvailability, setLives, setWrongLettersInBox, copyOfWrongLetters, wrongLettersInBox)
+            checkLetter(chosenWord, setResponse, randomWord, copyOfRandomWord, valueOfInput, setRightLetters, rightLetters, setCopyOfRandomWord, wrongLetters, setWrongLetters, setCopyOfWrongLetters, setTried, lives, setWinningMessage, setButtonAvailability, setValueOfInput, tried, setInputAvailability, setLives, setWrongLettersInBox, copyOfWrongLetters, wrongLettersInBox, setLetterPaint, letterPaint)
           }}
           text={'Chequea la letra'}
         />
