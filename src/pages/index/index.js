@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 
 import Button from '../../components/button';
+import Input from '../../components/input';
 
-import { sort, wroteInsideInput, checkLetter, putWrongLetterInBox, playAgain } from './functions'
+import { sort, wroteInsideInput, checkLetter, playAgain } from './functions'
 
 import './index.css';
 
@@ -65,7 +66,7 @@ const Index = () => {
 
         <p>Ingresa una letra para chequear que exista en la palabra:</p>
 
-        <input 
+        <Input 
           disabled={inputAvailability} 
           type="text" 
           id="letter" 

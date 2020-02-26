@@ -68,78 +68,81 @@ const checkLetter = (chosenWord, setResponse, randomWord, copyOfRandomWord, valu
     console.log('randomWord --> ', randomWord)
     console.log('copyOfRandomWord --> ', copyOfRandomWord)
 
+    if(valueOfInput !== ''){
 
-    for(let i = 0 ; i < copyOfRandomWord.length ; i++){
-      console.log('recorriendo string de palabra random como array')
-
-      if(valueOfInput === copyOfRandomWord[i]){
-
-        console.log('la letra coincide con un elemento de la lista')
-
-        document.getElementById(i).style.color = '#ffffff'
-          
-        let arrRights = rightLetters
-        arrRights.push(valueOfInput)
-        setRightLetters(arrRights)
-        console.log('rightLetters', rightLetters)
-
-        copyOfRandomWord.splice(i,1,0)
-        setCopyOfRandomWord(copyOfRandomWord)
-        console.log('copyOfRandomWord menos la letra adivinada --> ', copyOfRandomWord)
-
-      }else{
-        console.log('la letra NO coincide, copyOfRandomWord --> ', copyOfRandomWord)
-
-        let arrWrongs = wrongLetters
-        arrWrongs.push(valueOfInput)
-        setWrongLetters(arrWrongs)
-        console.log('wrongLetters', wrongLetters)
+      for(let i = 0 ; i < copyOfRandomWord.length ; i++){
+        console.log('recorriendo string de palabra random como array')
+  
+        if(valueOfInput === copyOfRandomWord[i]){
+  
+          console.log('la letra coincide con un elemento de la lista')
+  
+          document.getElementById(i).style.color = '#ffffff'
+            
+          let arrRights = rightLetters
+          arrRights.push(valueOfInput)
+          setRightLetters(arrRights)
+          console.log('rightLetters', rightLetters)
+  
+          copyOfRandomWord.splice(i,1,0)
+          setCopyOfRandomWord(copyOfRandomWord)
+          console.log('copyOfRandomWord menos la letra adivinada --> ', copyOfRandomWord)
+  
+        }else{
+          console.log('la letra NO coincide, copyOfRandomWord --> ', copyOfRandomWord)
+  
+          let arrWrongs = wrongLetters
+          arrWrongs.push(valueOfInput)
+          setWrongLetters(arrWrongs)
+          console.log('wrongLetters', wrongLetters)
+        }
+  
+        setWrongLetters([])
+  
       }
-
-      setWrongLetters([])
-
-    }
-
-    if(wrongLetters.length === copyOfRandomWord.length){
-
-      if(rightLetters.length > 0){
-        setTried('')
-        for(let j = 0 ; j < rightLetters.length ; j++){
-          console.log('recorriendo lista de letras correctas:', rightLetters)
-          if(valueOfInput === rightLetters[j]){
-            console.log('LA LETRA YA LA PROBÉ ANTES!!!!')
-            let alreadyGuessed = 'Ya ingresaste esta letra, prueba otra vez!'
-            setTried(alreadyGuessed)
-            console.log('tried:::', tried)
-          }else if(valueOfInput !== rightLetters[j] && lives >= 2){
-            console.log('entré acá')
+  
+      if(wrongLetters.length === copyOfRandomWord.length){
+  
+        if(rightLetters.length > 0){
+          setTried('')
+          for(let j = 0 ; j < rightLetters.length ; j++){
+            console.log('recorriendo lista de letras correctas:', rightLetters)
+            if(valueOfInput === rightLetters[j]){
+              console.log('LA LETRA YA LA PROBÉ ANTES!!!!')
+              let alreadyGuessed = 'Ya ingresaste esta letra, prueba otra vez!'
+              setTried(alreadyGuessed)
+              console.log('tried:::', tried)
+            }else if(valueOfInput !== rightLetters[j] && lives >= 2){
+              console.log('entré acá')
+              takeALife(lives, setLives, setResponse, copyOfWrongLetters, valueOfInput, setCopyOfWrongLetters, setWrongLettersInBox, wrongLettersInBox)
+              putWrongInBox(copyOfWrongLetters, valueOfInput, setCopyOfWrongLetters, setWrongLettersInBox, wrongLettersInBox)
+            }else if(valueOfInput !== rightLetters[j] && lives === 1){
+              zeroLives(setResponse, setButtonAvailability, setInputAvailability)
+              putWrongInBox(copyOfWrongLetters, valueOfInput, setCopyOfWrongLetters, setWrongLettersInBox, wrongLettersInBox)
+            }
+          }
+        }else{
+          if(lives >= 2){
             takeALife(lives, setLives, setResponse, copyOfWrongLetters, valueOfInput, setCopyOfWrongLetters, setWrongLettersInBox, wrongLettersInBox)
             putWrongInBox(copyOfWrongLetters, valueOfInput, setCopyOfWrongLetters, setWrongLettersInBox, wrongLettersInBox)
-          }else if(valueOfInput !== rightLetters[j] && lives === 1){
+          }else if(lives === 1){
             zeroLives(setResponse, setButtonAvailability, setInputAvailability)
             putWrongInBox(copyOfWrongLetters, valueOfInput, setCopyOfWrongLetters, setWrongLettersInBox, wrongLettersInBox)
           }
         }
-      }else{
-        if(lives >= 2){
-          takeALife(lives, setLives, setResponse, copyOfWrongLetters, valueOfInput, setCopyOfWrongLetters, setWrongLettersInBox, wrongLettersInBox)
-          putWrongInBox(copyOfWrongLetters, valueOfInput, setCopyOfWrongLetters, setWrongLettersInBox, wrongLettersInBox)
-        }else if(lives === 1){
-          zeroLives(setResponse, setButtonAvailability, setInputAvailability)
-          putWrongInBox(copyOfWrongLetters, valueOfInput, setCopyOfWrongLetters, setWrongLettersInBox, wrongLettersInBox)
-        }
+        
       }
-      
-    }
+  
+      if(rightLetters.length === copyOfRandomWord.length){
+        let youWon = 'Ganaste! la palabra es: ' + randomWord
+        setWinningMessage(youWon)
+        setButtonAvailability(true)
+        setInputAvailability(true)
+      }
+  
+      setValueOfInput('')
 
-    if(rightLetters.length === copyOfRandomWord.length){
-      let youWon = 'Ganaste! la palabra es: ' + randomWord
-      setWinningMessage(youWon)
-      setButtonAvailability(true)
-      setInputAvailability(true)
     }
-
-    setValueOfInput('')
 
   }
 }
