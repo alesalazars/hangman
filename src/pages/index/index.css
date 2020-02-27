@@ -34,7 +34,7 @@ li{
   margin: 0 10px;
   border-bottom:1px solid #fff;
   width: 20px;
-  /* color:transparent; */
+  color:transparent;
 }
 
 .notGuessed{color:transparent;}

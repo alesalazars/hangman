@@ -48,13 +48,9 @@ const Index = () => {
   // Puts the wrong letters in a box for the player to see
   const [wrongLettersInBox, setWrongLettersInBox] = useState()
 
-  // to color the letters that are right
-  const [letterPaint, setLetterPaint] = useState(false)
-
   // Variable that has the li with the letters of the random word
   const [liList, setLiList] = useState()
 
-  console.log(randomWord)
 
   return(
     <div className="index">
@@ -68,7 +64,7 @@ const Index = () => {
           text={'Sortear palabra'}/>
 
         <ul id="letters">
-          {randomWord !== undefined ? drawWord(letterPaint, randomWord, setLiList, liList) : ''}
+          {randomWord !== undefined ? drawWord(randomWord, setLiList, liList, rightLetters, copyOfRandomWord) : ''}
         </ul>
 
         <p>Ingresa una letra para chequear que exista en la palabra:</p>
@@ -86,9 +82,7 @@ const Index = () => {
         <Button 
           disabled={buttonAvailability} 
           onClick={ () => {
-            // let randomWordArray= randomWord.split('')
-            // setCopyOfRandomWord(randomWordArray)
-            checkLetter(setResponse, randomWord, copyOfRandomWord, valueOfInput, setRightLetters, rightLetters, setCopyOfRandomWord, wrongLetters, setWrongLetters, setCopyOfWrongLetters, setTried, lives, setWinningMessage, setButtonAvailability, setValueOfInput, tried, setInputAvailability, setLives, setWrongLettersInBox, copyOfWrongLetters, wrongLettersInBox, setLetterPaint, letterPaint, liList)
+            checkLetter(setResponse, randomWord, copyOfRandomWord, valueOfInput, setRightLetters, rightLetters, setCopyOfRandomWord, wrongLetters, setWrongLetters, setCopyOfWrongLetters, setTried, lives, setWinningMessage, setButtonAvailability, setValueOfInput, setInputAvailability, setLives, setWrongLettersInBox, copyOfWrongLetters, wrongLettersInBox, liList)
           }}
           text={'Chequea la letra'}
         />
@@ -100,7 +94,7 @@ const Index = () => {
         <div id="wrongLettersBox">{wrongLettersInBox}</div>
 
         <Button 
-          onClick={() => {playAgain(setRandomWord, setCopyOfRandomWord, setValueOfInput, setButtonAvailability, setInputAvailability, setResponse, setWinningMessage, setTried, setLives, setRightLetters, setWrongLetters, setCopyOfWrongLetters, setWrongLettersInBox)}} 
+          onClick={() => {playAgain(setRandomWord, setCopyOfRandomWord, setValueOfInput, setButtonAvailability, setInputAvailability, setResponse, setWinningMessage, setTried, setLives, setRightLetters, setWrongLetters, setCopyOfWrongLetters, setWrongLettersInBox, setLiList)}} 
           text={'Jugar de nuevo'}/>
 
       </header>

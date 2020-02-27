@@ -13,12 +13,25 @@ const sort = (setRandomWord, setCopyOfRandomWord) => {
   setCopyOfRandomWord(randomWordArray)
 }
 
-const drawWord = (letterPaint, randomWord, setLiList, liList) => {
+const drawWord = (randomWord, setLiList, liList, rightLetters, copyOfRandomWord) => {
   let wordDrawn = []
-  for(let i = 0 ; i < randomWord.length ; i++){
-    wordDrawn.push(<li key={i} id={i} className={letterPaint === true ? 'isGuessed' : 'notGuessed'}>{randomWord[i]}</li>)
-    // wordDrawn.push(<li key={i} id={i} className={letterPaint}>{randomWord[i]}</li>)
+
+  if( rightLetters !== undefined ){
+
+    for(let i = 0 ; i < copyOfRandomWord.length ; i++){
+      if(randomWord[i] !== copyOfRandomWord[i]){
+        wordDrawn.push(<li key={i} id={i} className={'isGuessed'}>{randomWord[i]}</li>)
+      }else{
+        wordDrawn.push(<li key={i} id={i} className={'notGuessed'}>{randomWord[i]}</li>)
+      }
+    }
+
+  }else{
+    for(let i = 0 ; i < copyOfRandomWord.length ; i++){
+      wordDrawn.push(<li key={i} id={i} className={'notGuessed'}>{randomWord[i]}</li>)
+    }
   }
+
   console.log('randomWord: ', randomWord)
   console.log('wordDrawn: ', wordDrawn)
 
@@ -48,12 +61,11 @@ const takeALife = (lives, setLives, setResponse) => {
   setLives(reduceLife)
   let livesLeft = 'Te quedan ' + (reduceLife) + ' vidas!' 
   setResponse(livesLeft)
-  console.log('lives: ', lives)
 }
 
 // No lives left
-const zeroLives = (setResponse, setButtonAvailability, setInputAvailability) => {
-  let noClicksLeft = 'Ya no quedan más vidas :(' 
+const zeroLives = (setResponse, setButtonAvailability, setInputAvailability, randomWord) => {
+  let noClicksLeft = 'Ya no quedan más vidas :( la palabra era ' + randomWord 
   setResponse(noClicksLeft)
   setButtonAvailability(true)
   setInputAvailability(true)
@@ -64,19 +76,15 @@ const putWrongInBox = (copyOfWrongLetters, valueOfInput, setCopyOfWrongLetters, 
   let auxArr = copyOfWrongLetters
   auxArr.push(valueOfInput)
   setCopyOfWrongLetters(auxArr)
-  console.log('copyOfWrongLetters ::::::', copyOfWrongLetters)
 
   let wrongLettersWithoutDuplicates = [...new Set(copyOfWrongLetters)]
-  console.log('wrongLettersWithoutDuplicates (ARRAY FILTRADO SIN DUPLICADOS)=====>', wrongLettersWithoutDuplicates)
   let wrongLettersIntoString = wrongLettersWithoutDuplicates.join(', ')
-  console.log('wrongLettersIntoString (LETRAS MALAS UNIDAS POR COMAS)', wrongLettersIntoString)
   setWrongLettersInBox(wrongLettersIntoString)
-  console.log('wrongLettersInBox : =======> ', wrongLettersInBox)
 }
 
 
 // Main interactions
-const checkLetter = (setResponse, randomWord, copyOfRandomWord, valueOfInput, setRightLetters, rightLetters, setCopyOfRandomWord, wrongLetters, setWrongLetters, setCopyOfWrongLetters, setTried, lives, setWinningMessage, setButtonAvailability, setValueOfInput, tried, setInputAvailability, setLives, setWrongLettersInBox, copyOfWrongLetters, wrongLettersInBox, setLetterPaint, letterPaint, liList) => {
+const checkLetter = (setResponse, randomWord, copyOfRandomWord, valueOfInput, setRightLetters, rightLetters, setCopyOfRandomWord, wrongLetters, setWrongLetters, setCopyOfWrongLetters, setTried, lives, setWinningMessage, setButtonAvailability, setValueOfInput, setInputAvailability, setLives, setWrongLettersInBox, copyOfWrongLetters, wrongLettersInBox, liList, setLiList) => {
   if(randomWord === undefined){
     let haveToClickSortButtonFirst = 'Debes clickear el botón "Sortear palabra" antes de hacer click aquí...'
     setResponse(haveToClickSortButtonFirst)
@@ -91,18 +99,7 @@ const checkLetter = (setResponse, randomWord, copyOfRandomWord, valueOfInput, se
   
         if(valueOfInput === copyOfRandomWord[i]){
 
-          console.log('la letra coincide con un elemento de la lista')
-
-          console.log('liList: ========> ', liList)
-          console.log('liList[i].props.children: ', liList[i].props.children)
-
-          if(valueOfInput === liList[i].props.children){
-            let getLi = liList[i].props.className
-            getLi = true
-            setLetterPaint(getLi)
-            console.log('letterPaint: ', letterPaint)
-          }
-          // setLetterPaint(true)
+          console.log('la letra SI coincide con un elemento de la lista')
             
           let arrRights = rightLetters
           arrRights.push(valueOfInput)
@@ -140,7 +137,7 @@ const checkLetter = (setResponse, randomWord, copyOfRandomWord, valueOfInput, se
               takeALife(lives, setLives, setResponse, copyOfWrongLetters, valueOfInput, setCopyOfWrongLetters, setWrongLettersInBox, wrongLettersInBox)
               putWrongInBox(copyOfWrongLetters, valueOfInput, setCopyOfWrongLetters, setWrongLettersInBox, wrongLettersInBox)
             }else if(valueOfInput !== rightLetters[j] && lives === 1){
-              zeroLives(setResponse, setButtonAvailability, setInputAvailability)
+              zeroLives(setResponse, setButtonAvailability, setInputAvailability, randomWord)
               putWrongInBox(copyOfWrongLetters, valueOfInput, setCopyOfWrongLetters, setWrongLettersInBox, wrongLettersInBox)
             }
           }
@@ -149,7 +146,7 @@ const checkLetter = (setResponse, randomWord, copyOfRandomWord, valueOfInput, se
             takeALife(lives, setLives, setResponse, copyOfWrongLetters, valueOfInput, setCopyOfWrongLetters, setWrongLettersInBox, wrongLettersInBox)
             putWrongInBox(copyOfWrongLetters, valueOfInput, setCopyOfWrongLetters, setWrongLettersInBox, wrongLettersInBox)
           }else if(lives === 1){
-            zeroLives(setResponse, setButtonAvailability, setInputAvailability)
+            zeroLives(setResponse, setButtonAvailability, setInputAvailability, randomWord)
             putWrongInBox(copyOfWrongLetters, valueOfInput, setCopyOfWrongLetters, setWrongLettersInBox, wrongLettersInBox)
           }
         }
@@ -171,9 +168,8 @@ const checkLetter = (setResponse, randomWord, copyOfRandomWord, valueOfInput, se
 }
 
 // Restart the game
-const playAgain = (setRandomWord, setChoose, setCopyOfRandomWord, setValueOfInput, setButtonAvailability, setInputAvailability, setResponse, setWinningMessage, setTried, setLives, setRightLetters, setWrongLetters, setCopyOfWrongLetters, setWrongLettersInBox) => {
+const playAgain = (setRandomWord, setCopyOfRandomWord, setValueOfInput, setButtonAvailability, setInputAvailability, setResponse, setWinningMessage, setTried, setLives, setRightLetters, setWrongLetters, setCopyOfWrongLetters, setWrongLettersInBox, setLiList) => {
   setRandomWord()
-  setChoose()
   setCopyOfRandomWord()
   setValueOfInput('')
   setButtonAvailability(true)
@@ -186,6 +182,7 @@ const playAgain = (setRandomWord, setChoose, setCopyOfRandomWord, setValueOfInpu
   setWrongLetters([])
   setCopyOfWrongLetters([])
   setWrongLettersInBox()
+  setLiList()
 }
 
 
