@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import Button from '../../components/button';
 import Input from '../../components/input';
 
-import { sort, wroteInsideInput, checkLetter, playAgain, drawWord, wa } from './functions'
+import { sort, wroteInsideInput, checkLetter, playAgain, drawWord } from './functions'
 
 import './index.css';
 
@@ -51,6 +51,9 @@ const Index = () => {
   // to color the letters that are right
   const [letterPaint, setLetterPaint] = useState(false)
 
+  // Variable that has the li with the letters of the random word
+  const [liList, setLiList] = useState()
+
   console.log(randomWord)
 
   return(
@@ -60,12 +63,12 @@ const Index = () => {
 
         <Button 
           onClick={ () => {
-            sort(setRandomWord)
+            sort(setRandomWord, setCopyOfRandomWord)
           }} 
           text={'Sortear palabra'}/>
 
         <ul id="letters">
-          {randomWord !== undefined ? drawWord(letterPaint, randomWord) : ''}
+          {randomWord !== undefined ? drawWord(letterPaint, randomWord, setLiList, liList) : ''}
         </ul>
 
         <p>Ingresa una letra para chequear que exista en la palabra:</p>
@@ -77,16 +80,15 @@ const Index = () => {
           value={valueOfInput} 
           onChange={(event) => {
             wroteInsideInput(event, inputAvailability, setButtonAvailability, setValueOfInput)
-            wa(randomWord, setCopyOfRandomWord)
           }}
         />
 
         <Button 
           disabled={buttonAvailability} 
           onClick={ () => {
-            let randomWordArray= randomWord.split('')
-            setCopyOfRandomWord(randomWordArray)
-            checkLetter(setResponse, randomWord, copyOfRandomWord, valueOfInput, setRightLetters, rightLetters, setCopyOfRandomWord, wrongLetters, setWrongLetters, setCopyOfWrongLetters, setTried, lives, setWinningMessage, setButtonAvailability, setValueOfInput, tried, setInputAvailability, setLives, setWrongLettersInBox, copyOfWrongLetters, wrongLettersInBox, setLetterPaint, letterPaint)
+            // let randomWordArray= randomWord.split('')
+            // setCopyOfRandomWord(randomWordArray)
+            checkLetter(setResponse, randomWord, copyOfRandomWord, valueOfInput, setRightLetters, rightLetters, setCopyOfRandomWord, wrongLetters, setWrongLetters, setCopyOfWrongLetters, setTried, lives, setWinningMessage, setButtonAvailability, setValueOfInput, tried, setInputAvailability, setLives, setWrongLettersInBox, copyOfWrongLetters, wrongLettersInBox, setLetterPaint, letterPaint, liList)
           }}
           text={'Chequea la letra'}
         />

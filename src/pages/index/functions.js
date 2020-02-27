@@ -5,12 +5,15 @@ import './index.css';
 const words = ['sol', 'nube', 'lluvia']
 
 // Throws a random word.
-const sort = (setRandomWord) => {
+const sort = (setRandomWord, setCopyOfRandomWord) => {
   let random = words[Math.floor(Math.random() * words.length)];
   setRandomWord(random)
+
+  let randomWordArray= random.split('')
+  setCopyOfRandomWord(randomWordArray)
 }
 
-const drawWord = (letterPaint, randomWord) => {
+const drawWord = (letterPaint, randomWord, setLiList, liList) => {
   let wordDrawn = []
   for(let i = 0 ; i < randomWord.length ; i++){
     wordDrawn.push(<li key={i} id={i} className={letterPaint === true ? 'isGuessed' : 'notGuessed'}>{randomWord[i]}</li>)
@@ -18,16 +21,15 @@ const drawWord = (letterPaint, randomWord) => {
   }
   console.log('randomWord: ', randomWord)
   console.log('wordDrawn: ', wordDrawn)
+
+  if(liList === undefined){
+    let helper = wordDrawn
+    setLiList(helper)
+  }
+
   return(
     wordDrawn
   )
-}
-// let randomWordArray= randomWord.split('')
-//   setCopyOfRandomWord(randomWordArray)
-
-const wa = (randomWord, setCopyOfRandomWord) => {
-  let randomWordArray= randomWord.split('')
-  setCopyOfRandomWord(randomWordArray)
 }
 
 // Gets the value of the input when onChange is triggered.
@@ -74,7 +76,7 @@ const putWrongInBox = (copyOfWrongLetters, valueOfInput, setCopyOfWrongLetters, 
 
 
 // Main interactions
-const checkLetter = (setResponse, randomWord, copyOfRandomWord, valueOfInput, setRightLetters, rightLetters, setCopyOfRandomWord, wrongLetters, setWrongLetters, setCopyOfWrongLetters, setTried, lives, setWinningMessage, setButtonAvailability, setValueOfInput, tried, setInputAvailability, setLives, setWrongLettersInBox, copyOfWrongLetters, wrongLettersInBox, setLetterPaint, letterPaint) => {
+const checkLetter = (setResponse, randomWord, copyOfRandomWord, valueOfInput, setRightLetters, rightLetters, setCopyOfRandomWord, wrongLetters, setWrongLetters, setCopyOfWrongLetters, setTried, lives, setWinningMessage, setButtonAvailability, setValueOfInput, tried, setInputAvailability, setLives, setWrongLettersInBox, copyOfWrongLetters, wrongLettersInBox, setLetterPaint, letterPaint, liList) => {
   if(randomWord === undefined){
     let haveToClickSortButtonFirst = 'Debes clickear el botón "Sortear palabra" antes de hacer click aquí...'
     setResponse(haveToClickSortButtonFirst)
@@ -88,24 +90,19 @@ const checkLetter = (setResponse, randomWord, copyOfRandomWord, valueOfInput, se
         console.log('recorriendo string de palabra random como array')
   
         if(valueOfInput === copyOfRandomWord[i]){
-  
-          console.log('la letra coincide con un elemento de la lista')
-  
-          for(let p = 0 ; p < randomWord.length ; p++){
-            console.log('copyOfRandomWord[i]: ', copyOfRandomWord[i])
-            console.log('randomWord[p]: ', randomWord[p])
-            console.log('randomWord[p].children: ', randomWord[p].props.children)
-            console.log('randomWord[p].className: ', randomWord[p].props.className)
 
-            if(copyOfRandomWord[i] === randomWord[p].props.children){
-              let getLi = randomWord[p].props.className
-              getLi = true
-              setLetterPaint(getLi)
-              console.log('letterPaint: ', letterPaint)
-            }
+          console.log('la letra coincide con un elemento de la lista')
+
+          console.log('liList: ========> ', liList)
+          console.log('liList[i].props.children: ', liList[i].props.children)
+
+          if(valueOfInput === liList[i].props.children){
+            let getLi = liList[i].props.className
+            getLi = true
+            setLetterPaint(getLi)
+            console.log('letterPaint: ', letterPaint)
           }
           // setLetterPaint(true)
-          // document.getElementById(i).style.color = '#ffffff'
             
           let arrRights = rightLetters
           arrRights.push(valueOfInput)
@@ -139,9 +136,7 @@ const checkLetter = (setResponse, randomWord, copyOfRandomWord, valueOfInput, se
               console.log('LA LETRA YA LA PROBÉ ANTES!!!!')
               let alreadyGuessed = 'Ya ingresaste esta letra, prueba otra vez!'
               setTried(alreadyGuessed)
-              console.log('tried:::', tried)
             }else if(valueOfInput !== rightLetters[j] && lives >= 2){
-              console.log('entré acá')
               takeALife(lives, setLives, setResponse, copyOfWrongLetters, valueOfInput, setCopyOfWrongLetters, setWrongLettersInBox, wrongLettersInBox)
               putWrongInBox(copyOfWrongLetters, valueOfInput, setCopyOfWrongLetters, setWrongLettersInBox, wrongLettersInBox)
             }else if(valueOfInput !== rightLetters[j] && lives === 1){
@@ -194,4 +189,4 @@ const playAgain = (setRandomWord, setChoose, setCopyOfRandomWord, setValueOfInpu
 }
 
 
-export { sort, wroteInsideInput, checkLetter, playAgain, drawWord, wa };
+export { sort, wroteInsideInput, checkLetter, playAgain, drawWord };
