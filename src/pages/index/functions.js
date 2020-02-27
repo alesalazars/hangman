@@ -2,20 +2,31 @@ import React from 'react';
 import './index.css';
 
 
-const words = ['sol', 'nutria', 'sunny']
+const words = ['sol', 'nube', 'lluvia']
 
-// Throws a random word and creates the spaces for each letter in the DOM.
-const sort = (setRandomWord, setChoose, setCopyOfRandomWord, letterPaint) => {
+// Throws a random word.
+const sort = (setRandomWord) => {
   let random = words[Math.floor(Math.random() * words.length)];
   setRandomWord(random)
-  let aux = []
-  for(let i = 0 ; i < random.length ; i++){
-    // aux.push(<li key={i} id={i} className={letterPaint === true ? 'isGuessed' : 'notGuessed'}>{random[i]}</li>)
-    aux.push(<li key={i} id={i} className={letterPaint}>{random[i]}</li>)
+}
+
+const drawWord = (letterPaint, randomWord) => {
+  let wordDrawn = []
+  for(let i = 0 ; i < randomWord.length ; i++){
+    wordDrawn.push(<li key={i} id={i} className={letterPaint === true ? 'isGuessed' : 'notGuessed'}>{randomWord[i]}</li>)
+    // wordDrawn.push(<li key={i} id={i} className={letterPaint}>{randomWord[i]}</li>)
   }
-  setChoose(aux)
-  console.log('AUX', aux)
-  let randomWordArray= random.split('')
+  console.log('randomWord: ', randomWord)
+  console.log('wordDrawn: ', wordDrawn)
+  return(
+    wordDrawn
+  )
+}
+// let randomWordArray= randomWord.split('')
+//   setCopyOfRandomWord(randomWordArray)
+
+const wa = (randomWord, setCopyOfRandomWord) => {
+  let randomWordArray= randomWord.split('')
   setCopyOfRandomWord(randomWordArray)
 }
 
@@ -63,8 +74,8 @@ const putWrongInBox = (copyOfWrongLetters, valueOfInput, setCopyOfWrongLetters, 
 
 
 // Main interactions
-const checkLetter = (chosenWord, setResponse, randomWord, copyOfRandomWord, valueOfInput, setRightLetters, rightLetters, setCopyOfRandomWord, wrongLetters, setWrongLetters, setCopyOfWrongLetters, setTried, lives, setWinningMessage, setButtonAvailability, setValueOfInput, tried, setInputAvailability, setLives, setWrongLettersInBox, copyOfWrongLetters, wrongLettersInBox, setLetterPaint, letterPaint) => {
-  if(chosenWord === undefined){
+const checkLetter = (setResponse, randomWord, copyOfRandomWord, valueOfInput, setRightLetters, rightLetters, setCopyOfRandomWord, wrongLetters, setWrongLetters, setCopyOfWrongLetters, setTried, lives, setWinningMessage, setButtonAvailability, setValueOfInput, tried, setInputAvailability, setLives, setWrongLettersInBox, copyOfWrongLetters, wrongLettersInBox, setLetterPaint, letterPaint) => {
+  if(randomWord === undefined){
     let haveToClickSortButtonFirst = 'Debes clickear el botón "Sortear palabra" antes de hacer click aquí...'
     setResponse(haveToClickSortButtonFirst)
   }else{
@@ -80,19 +91,20 @@ const checkLetter = (chosenWord, setResponse, randomWord, copyOfRandomWord, valu
   
           console.log('la letra coincide con un elemento de la lista')
   
-          for(let p = 0 ; p < chosenWord.length ; p++){
+          for(let p = 0 ; p < randomWord.length ; p++){
             console.log('copyOfRandomWord[i]: ', copyOfRandomWord[i])
-            console.log('chosenWord[p]: ', chosenWord[p])
-            console.log('chosenWord[p].children: ', chosenWord[p].props.children)
-            console.log('chosenWord[p].className: ', chosenWord[p].props.className)
+            console.log('randomWord[p]: ', randomWord[p])
+            console.log('randomWord[p].children: ', randomWord[p].props.children)
+            console.log('randomWord[p].className: ', randomWord[p].props.className)
 
-            if(copyOfRandomWord[i] === chosenWord[p].props.children){
-              let getLi = chosenWord[p].props.className
-              getLi = 'isGuessed'
+            if(copyOfRandomWord[i] === randomWord[p].props.children){
+              let getLi = randomWord[p].props.className
+              getLi = true
               setLetterPaint(getLi)
               console.log('letterPaint: ', letterPaint)
             }
           }
+          // setLetterPaint(true)
           // document.getElementById(i).style.color = '#ffffff'
             
           let arrRights = rightLetters
@@ -182,4 +194,4 @@ const playAgain = (setRandomWord, setChoose, setCopyOfRandomWord, setValueOfInpu
 }
 
 
-export { sort, wroteInsideInput, checkLetter, playAgain };
+export { sort, wroteInsideInput, checkLetter, playAgain, drawWord, wa };

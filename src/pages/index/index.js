@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import Button from '../../components/button';
 import Input from '../../components/input';
 
-import { sort, wroteInsideInput, checkLetter, playAgain } from './functions'
+import { sort, wroteInsideInput, checkLetter, playAgain, drawWord, wa } from './functions'
 
 import './index.css';
 
@@ -12,10 +12,7 @@ const Index = () => {
   // Saves the random word chosen.
   const [randomWord, setRandomWord] = useState()
 
-  // Draws the word in the DOM, shows spaces for each letter.
-  const [chosenWord, setChoose] = useState()
-
-  // Saves a copy of the random word chosen, and update removing the letters that are already correct to avoid unnecesarry iterations.
+  // Saves a copy of the random word chosen, and updates removing the letters that are already correct to avoid unnecesarry iterations.
   const [copyOfRandomWord, setCopyOfRandomWord] = useState()
 
   // Saves the value of the input when onChange is triggered.
@@ -52,7 +49,9 @@ const Index = () => {
   const [wrongLettersInBox, setWrongLettersInBox] = useState()
 
   // to color the letters that are right
-  const [letterPaint, setLetterPaint] = useState('notGuessed')
+  const [letterPaint, setLetterPaint] = useState(false)
+
+  console.log(randomWord)
 
   return(
     <div className="index">
@@ -60,11 +59,13 @@ const Index = () => {
       <header className="App-header">
 
         <Button 
-          onClick={ () => {sort(setRandomWord, setChoose, setCopyOfRandomWord, letterPaint)} } 
+          onClick={ () => {
+            sort(setRandomWord)
+          }} 
           text={'Sortear palabra'}/>
 
         <ul id="letters">
-          {chosenWord}
+          {randomWord !== undefined ? drawWord(letterPaint, randomWord) : ''}
         </ul>
 
         <p>Ingresa una letra para chequear que exista en la palabra:</p>
@@ -74,13 +75,18 @@ const Index = () => {
           type="text" 
           id="letter" 
           value={valueOfInput} 
-          onChange={(event) => {wroteInsideInput(event, inputAvailability, setButtonAvailability, setValueOfInput)}}
+          onChange={(event) => {
+            wroteInsideInput(event, inputAvailability, setButtonAvailability, setValueOfInput)
+            wa(randomWord, setCopyOfRandomWord)
+          }}
         />
 
         <Button 
           disabled={buttonAvailability} 
           onClick={ () => {
-            checkLetter(chosenWord, setResponse, randomWord, copyOfRandomWord, valueOfInput, setRightLetters, rightLetters, setCopyOfRandomWord, wrongLetters, setWrongLetters, setCopyOfWrongLetters, setTried, lives, setWinningMessage, setButtonAvailability, setValueOfInput, tried, setInputAvailability, setLives, setWrongLettersInBox, copyOfWrongLetters, wrongLettersInBox, setLetterPaint, letterPaint)
+            let randomWordArray= randomWord.split('')
+            setCopyOfRandomWord(randomWordArray)
+            checkLetter(setResponse, randomWord, copyOfRandomWord, valueOfInput, setRightLetters, rightLetters, setCopyOfRandomWord, wrongLetters, setWrongLetters, setCopyOfWrongLetters, setTried, lives, setWinningMessage, setButtonAvailability, setValueOfInput, tried, setInputAvailability, setLives, setWrongLettersInBox, copyOfWrongLetters, wrongLettersInBox, setLetterPaint, letterPaint)
           }}
           text={'Chequea la letra'}
         />
@@ -92,7 +98,7 @@ const Index = () => {
         <div id="wrongLettersBox">{wrongLettersInBox}</div>
 
         <Button 
-          onClick={() => {playAgain(setRandomWord, setChoose, setCopyOfRandomWord, setValueOfInput, setButtonAvailability, setInputAvailability, setResponse, setWinningMessage, setTried, setLives, setRightLetters, setWrongLetters, setCopyOfWrongLetters, setWrongLettersInBox)}} 
+          onClick={() => {playAgain(setRandomWord, setCopyOfRandomWord, setValueOfInput, setButtonAvailability, setInputAvailability, setResponse, setWinningMessage, setTried, setLives, setRightLetters, setWrongLetters, setCopyOfWrongLetters, setWrongLettersInBox)}} 
           text={'Jugar de nuevo'}/>
 
       </header>
