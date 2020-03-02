@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import Button from '../../components/button';
 import Input from '../../components/input';
 
-import { sort, wroteInsideInput, checkLetter, playAgain, drawWord } from './functions'
+import { sort, wroteInsideInput, checkLetter, playAgain, drawWord, handleKeyPress } from './functions'
 
 import './index.css';
 
@@ -60,25 +60,29 @@ const Index = () => {
         <div class="row">
 
           <Button 
-          onClick={ () => {
-            sort(setRandomWord, setCopyOfRandomWord, setValueOfInput, setButtonAvailability, setInputAvailability, setResponse, setWinningMessage, setTried, setLives, setRightLetters, setWrongLetters, setCopyOfWrongLetters, setWrongLettersInBox, setLiList)
-          }} 
-          text={'Sortear palabra'}/>
+            onClick={ () => {
+              sort(setRandomWord, setCopyOfRandomWord, setValueOfInput, setButtonAvailability, setInputAvailability, setResponse, setWinningMessage, setTried, setLives, setRightLetters, setWrongLetters, setCopyOfWrongLetters, setWrongLettersInBox, setLiList)
+            }} 
+            text={'Sortear palabra'}
+            className={'start-btn'}  
+          />
 
           <ul id="letters">
             {randomWord !== undefined ? drawWord(randomWord, setLiList, liList, rightLetters, copyOfRandomWord) : ''}
           </ul>
 
-          <p>Ingresa una letra para chequear que exista en la palabra:</p>
+        </div>
+
+        <div class="row">
+          <p className="mb-0">Ingresa una letra:</p>
 
           <Input 
             disabled={inputAvailability} 
             type="text" 
             id="letter" 
             value={valueOfInput} 
-            onChange={(event) => {
-              wroteInsideInput(event, inputAvailability, setButtonAvailability, setValueOfInput)
-            }}
+            onChange={(event) => { wroteInsideInput(event, inputAvailability, setButtonAvailability, setValueOfInput) }}
+            onKeyPress={(event) => { handleKeyPress(event, checkLetter, setResponse, randomWord, copyOfRandomWord, valueOfInput, setRightLetters, rightLetters, setCopyOfRandomWord, wrongLetters, setWrongLetters, setCopyOfWrongLetters, setTried, lives, setWinningMessage, setButtonAvailability, setValueOfInput, setInputAvailability, setLives, setWrongLettersInBox, copyOfWrongLetters, wrongLettersInBox) }}
           />
 
           <Button 
@@ -89,6 +93,9 @@ const Index = () => {
             text={'Chequea la letra'}
             className={'check-btn'}
           />
+        </div>
+
+        <div class="row">
 
           <p>{youWon}</p>
           <p>{tried}</p>

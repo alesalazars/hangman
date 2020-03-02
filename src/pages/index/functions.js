@@ -98,6 +98,12 @@ const putWrongInBox = (copyOfWrongLetters, valueOfInput, setCopyOfWrongLetters, 
   setWrongLettersInBox(wrongLettersIntoString)
 }
 
+const handleKeyPress = (event, checkLetter, setResponse, randomWord, copyOfRandomWord, valueOfInput, setRightLetters, rightLetters, setCopyOfRandomWord, wrongLetters, setWrongLetters, setCopyOfWrongLetters, setTried, lives, setWinningMessage, setButtonAvailability, setValueOfInput, setInputAvailability, setLives, setWrongLettersInBox, copyOfWrongLetters, wrongLettersInBox) => {
+  if(event.which === 13){
+    checkLetter(setResponse, randomWord, copyOfRandomWord, valueOfInput, setRightLetters, rightLetters, setCopyOfRandomWord, wrongLetters, setWrongLetters, setCopyOfWrongLetters, setTried, lives, setWinningMessage, setButtonAvailability, setValueOfInput, setInputAvailability, setLives, setWrongLettersInBox, copyOfWrongLetters, wrongLettersInBox)
+  }
+}
+
 
 // Main interactions
 const checkLetter = (setResponse, randomWord, copyOfRandomWord, valueOfInput, setRightLetters, rightLetters, setCopyOfRandomWord, wrongLetters, setWrongLetters, setCopyOfWrongLetters, setTried, lives, setWinningMessage, setButtonAvailability, setValueOfInput, setInputAvailability, setLives, setWrongLettersInBox, copyOfWrongLetters, wrongLettersInBox) => {
@@ -202,4 +208,4 @@ const playAgain = (setRandomWord, setCopyOfRandomWord, setValueOfInput, setButto
 }
 
 
-export { sort, wroteInsideInput, checkLetter, playAgain, drawWord };
+export { sort, wroteInsideInput, checkLetter, playAgain, drawWord, handleKeyPress };

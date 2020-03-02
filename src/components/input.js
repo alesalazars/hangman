@@ -9,6 +9,7 @@ const Input = (props) => {
             id={props.id}
             value={props.value} 
             onChange={props.onChange}
+            onKeyPress={props.onKeyPress}
         />
     )
 }
