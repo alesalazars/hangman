@@ -1,13 +1,23 @@
+/* Colors */
+.main-color{color: #34344A;}
+.second-color{color: #90909C;}
+.third-color{color:#ECECEE;}
+
+/* General */
 body {
   text-align: center;
-  background-color: #282c34;
+  background-color: #fff;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   font-size: calc(10px + 2vmin);
-  color: white;
+  color: #34344A;
+}
+.container{
+  max-width:90%;
+  margin:0 5%;
 }
 
 
@@ -24,33 +34,64 @@ body {
 .btn:hover{
   cursor:pointer;
 }
+.check-btn{
+  background-color: #9ECE55;
+  color: #fff;
+  -webkit-box-shadow: 0px 4px 0px 0px rgb(142, 185, 77);
+  -moz-box-shadow:    0px 4px 0px 0px rgb(142, 185, 77);
+  box-shadow:         0px 4px 0px 0px rgb(142, 185, 77);
+  border: none;
+}
+
+input{
+  font-size:20px;
+  padding:5px 10px;
+  margin:10px;
+  border-radius: 5px;
+  background-color: #ECECEE;
+  border: none;
+  min-height: 45px;
+  text-align: center;
+  width: 60px;
+}
+
 
 ul{padding: 0;}
 li{
   display: inline-block;
   font-size:24px;
   text-transform: uppercase;
-  padding-bottom:5px;
-  margin: 0 10px;
-  border-bottom:1px solid #fff;
+  padding:5px;
+  margin: 0 5px;
+  border:2px solid #ECECEE;
   width: 20px;
   color:transparent;
+  border-radius: 5px;
 }
 
 .notGuessed{color:transparent;}
-.isGuessed{color:#fff;}
-
-
-input{
-  font-size:20px;
-  padding:5px 10px;
-  margin:10px;
-}
+.isGuessed{color:#34344A;}
 
 
 #wrongLettersBox{
-  border:1px solid #fff;
+  min-height: 30px;
+  min-width: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border:2px solid #ECECEE;
+  border-radius: 5px;
   padding:10px;
   text-align: center;
+  margin: 30px auto 20px auto;
+}
+#wrongLettersBox h6{
+  color:#34344A;
+  margin-top: 0;
+  margin-bottom: 20px;
   text-transform: uppercase;
+}
+#wrongLettersBox p{
+  color:#90909C;
+  margin: 0;
 }

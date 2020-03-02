@@ -5,13 +5,27 @@ import './index.css';
 const words = ['sol', 'nube', 'lluvia']
 
 // Throws a random word.
-const sort = (setRandomWord, setCopyOfRandomWord) => {
+const sort = (setRandomWord, setCopyOfRandomWord, setValueOfInput, setButtonAvailability, setInputAvailability, setResponse, setWinningMessage, setTried, setLives, setRightLetters, setWrongLetters, setCopyOfWrongLetters, setWrongLettersInBox, setLiList) => {
   let random = words[Math.floor(Math.random() * words.length)];
   setRandomWord(random)
 
   let randomWordArray= random.split('')
   setCopyOfRandomWord(randomWordArray)
+
+  setValueOfInput('')
+  setButtonAvailability(true)
+  setInputAvailability(false)
+  setResponse('Tienes 5 vidas para adivinar.')
+  setWinningMessage('')
+  setTried('')
+  setLives(5)
+  setRightLetters([])
+  setWrongLetters([])
+  setCopyOfWrongLetters([])
+  setWrongLettersInBox()
+  setLiList()
 }
+
 
 const drawWord = (randomWord, setLiList, liList, rightLetters, copyOfRandomWord) => {
   let wordDrawn = []
@@ -45,6 +59,7 @@ const drawWord = (randomWord, setLiList, liList, rightLetters, copyOfRandomWord)
   )
 }
 
+
 // Gets the value of the input when onChange is triggered.
 const wroteInsideInput = (event, inputAvailability, setButtonAvailability, setValueOfInput) => {
   document.getElementById("letter").maxLength = "1";
@@ -55,11 +70,12 @@ const wroteInsideInput = (event, inputAvailability, setButtonAvailability, setVa
   }
 }
 
+
 // Remove a life
 const takeALife = (lives, setLives, setResponse) => {
   let reduceLife = lives - 1
   setLives(reduceLife)
-  let livesLeft = 'Te quedan ' + (reduceLife) + ' vidas!' 
+  let livesLeft = 'Vidas: ' + (reduceLife)
   setResponse(livesLeft)
 }
 
@@ -72,7 +88,7 @@ const zeroLives = (setResponse, setButtonAvailability, setInputAvailability, ran
 }
 
 // Put wrong letter inside box at the bottom
-const putWrongInBox = (copyOfWrongLetters, valueOfInput, setCopyOfWrongLetters, setWrongLettersInBox, wrongLettersInBox) => {
+const putWrongInBox = (copyOfWrongLetters, valueOfInput, setCopyOfWrongLetters, setWrongLettersInBox) => {
   let auxArr = copyOfWrongLetters
   auxArr.push(valueOfInput)
   setCopyOfWrongLetters(auxArr)
@@ -84,7 +100,7 @@ const putWrongInBox = (copyOfWrongLetters, valueOfInput, setCopyOfWrongLetters, 
 
 
 // Main interactions
-const checkLetter = (setResponse, randomWord, copyOfRandomWord, valueOfInput, setRightLetters, rightLetters, setCopyOfRandomWord, wrongLetters, setWrongLetters, setCopyOfWrongLetters, setTried, lives, setWinningMessage, setButtonAvailability, setValueOfInput, setInputAvailability, setLives, setWrongLettersInBox, copyOfWrongLetters, wrongLettersInBox, liList, setLiList) => {
+const checkLetter = (setResponse, randomWord, copyOfRandomWord, valueOfInput, setRightLetters, rightLetters, setCopyOfRandomWord, wrongLetters, setWrongLetters, setCopyOfWrongLetters, setTried, lives, setWinningMessage, setButtonAvailability, setValueOfInput, setInputAvailability, setLives, setWrongLettersInBox, copyOfWrongLetters, wrongLettersInBox) => {
   if(randomWord === undefined){
     let haveToClickSortButtonFirst = 'Debes clickear el botón "Sortear palabra" antes de hacer click aquí...'
     setResponse(haveToClickSortButtonFirst)
@@ -133,7 +149,7 @@ const checkLetter = (setResponse, randomWord, copyOfRandomWord, valueOfInput, se
               console.log('LA LETRA YA LA PROBÉ ANTES!!!!')
               let alreadyGuessed = 'Ya ingresaste esta letra, prueba otra vez!'
               setTried(alreadyGuessed)
-            }else if(valueOfInput !== rightLetters[j] && lives >= 2){
+            }else if(valueOfInput !== rightLetters[j] && lives >= 3){
               takeALife(lives, setLives, setResponse, copyOfWrongLetters, valueOfInput, setCopyOfWrongLetters, setWrongLettersInBox, wrongLettersInBox)
               putWrongInBox(copyOfWrongLetters, valueOfInput, setCopyOfWrongLetters, setWrongLettersInBox, wrongLettersInBox)
             }else if(valueOfInput !== rightLetters[j] && lives === 1){

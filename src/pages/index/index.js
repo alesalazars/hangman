@@ -55,49 +55,57 @@ const Index = () => {
   return(
     <div className="index">
       {console.log('renderizando')}
-      <header className="App-header">
 
-        <Button 
+      <div class="container">
+        <div class="row">
+
+          <Button 
           onClick={ () => {
-            sort(setRandomWord, setCopyOfRandomWord)
+            sort(setRandomWord, setCopyOfRandomWord, setValueOfInput, setButtonAvailability, setInputAvailability, setResponse, setWinningMessage, setTried, setLives, setRightLetters, setWrongLetters, setCopyOfWrongLetters, setWrongLettersInBox, setLiList)
           }} 
           text={'Sortear palabra'}/>
 
-        <ul id="letters">
-          {randomWord !== undefined ? drawWord(randomWord, setLiList, liList, rightLetters, copyOfRandomWord) : ''}
-        </ul>
+          <ul id="letters">
+            {randomWord !== undefined ? drawWord(randomWord, setLiList, liList, rightLetters, copyOfRandomWord) : ''}
+          </ul>
 
-        <p>Ingresa una letra para chequear que exista en la palabra:</p>
+          <p>Ingresa una letra para chequear que exista en la palabra:</p>
 
-        <Input 
-          disabled={inputAvailability} 
-          type="text" 
-          id="letter" 
-          value={valueOfInput} 
-          onChange={(event) => {
-            wroteInsideInput(event, inputAvailability, setButtonAvailability, setValueOfInput)
-          }}
-        />
+          <Input 
+            disabled={inputAvailability} 
+            type="text" 
+            id="letter" 
+            value={valueOfInput} 
+            onChange={(event) => {
+              wroteInsideInput(event, inputAvailability, setButtonAvailability, setValueOfInput)
+            }}
+          />
 
-        <Button 
-          disabled={buttonAvailability} 
-          onClick={ () => {
-            checkLetter(setResponse, randomWord, copyOfRandomWord, valueOfInput, setRightLetters, rightLetters, setCopyOfRandomWord, wrongLetters, setWrongLetters, setCopyOfWrongLetters, setTried, lives, setWinningMessage, setButtonAvailability, setValueOfInput, setInputAvailability, setLives, setWrongLettersInBox, copyOfWrongLetters, wrongLettersInBox, liList)
-          }}
-          text={'Chequea la letra'}
-        />
+          <Button 
+            disabled={buttonAvailability} 
+            onClick={ () => {
+              checkLetter(setResponse, randomWord, copyOfRandomWord, valueOfInput, setRightLetters, rightLetters, setCopyOfRandomWord, wrongLetters, setWrongLetters, setCopyOfWrongLetters, setTried, lives, setWinningMessage, setButtonAvailability, setValueOfInput, setInputAvailability, setLives, setWrongLettersInBox, copyOfWrongLetters, wrongLettersInBox)
+            }}
+            text={'Chequea la letra'}
+            className={'check-btn'}
+          />
 
-        <p>{youWon}</p>
-        <p>{tried}</p>
-        <p>{response}</p>
-        
-        <div id="wrongLettersBox">{wrongLettersInBox}</div>
+          <p>{youWon}</p>
+          <p>{tried}</p>
+          <p>{response}</p>
+          
+          <div id="wrongLettersBox">
+            <h6>Letras erróneas:</h6>
+            <p>{wrongLettersInBox}</p>
+          </div>
 
-        <Button 
-          onClick={() => {playAgain(setRandomWord, setCopyOfRandomWord, setValueOfInput, setButtonAvailability, setInputAvailability, setResponse, setWinningMessage, setTried, setLives, setRightLetters, setWrongLetters, setCopyOfWrongLetters, setWrongLettersInBox, setLiList)}} 
-          text={'Jugar de nuevo'}/>
+          <Button 
+            onClick={() => {playAgain(setRandomWord, setCopyOfRandomWord, setValueOfInput, setButtonAvailability, setInputAvailability, setResponse, setWinningMessage, setTried, setLives, setRightLetters, setWrongLetters, setCopyOfWrongLetters, setWrongLettersInBox, setLiList)}} 
+            text={'Jugar de nuevo'}/>
 
-      </header>
+        </div>
+      </div>
+
     </div>
   )
 
