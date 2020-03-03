@@ -6,7 +6,16 @@
 /* Margins */
 .mb-0{margin-bottom: 0;}
 
+/* Fonts */
+.f-bold{font-weight: 700;}
+.f-black{font-weight: 900;}
+.f-uppercase{text-transform: uppercase;}
+
 /* General */
+body, button, input{
+  font-family: 'Roboto Slab' !important;
+}
+
 .index {
   text-align: center;
   background-color: #fff;

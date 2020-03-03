@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import Button from '../../components/button';
 import Input from '../../components/input';
@@ -51,21 +51,25 @@ const Index = () => {
   // Variable that has the li with the letters of the random word
   const [liList, setLiList] = useState()
 
+  useEffect(() => {
+    sort(setRandomWord, setCopyOfRandomWord)
+  }, [])
+
 
   return(
     <div className="index">
       {console.log('renderizando')}
 
-      <div class="container">
-        <div class="row">
+      <div className="container">
+        <div className="row">
 
-          <Button 
+          {/* <Button 
             onClick={ () => {
-              sort(setRandomWord, setCopyOfRandomWord, setValueOfInput, setButtonAvailability, setInputAvailability, setResponse, setWinningMessage, setTried, setLives, setRightLetters, setWrongLetters, setCopyOfWrongLetters, setWrongLettersInBox, setLiList)
+              sort(setRandomWord, setCopyOfRandomWord)
             }} 
             text={'Sortear palabra'}
             className={'start-btn'}  
-          />
+          /> */}
 
           <ul id="letters">
             {randomWord !== undefined ? drawWord(randomWord, setLiList, liList, rightLetters, copyOfRandomWord) : ''}
@@ -73,7 +77,7 @@ const Index = () => {
 
         </div>
 
-        <div class="row">
+        <div className="row">
           <p className="mb-0">Ingresa una letra:</p>
 
           <Input 
@@ -95,9 +99,9 @@ const Index = () => {
           />
         </div>
 
-        <div class="row">
+        <div className="row">
 
-          <p>{youWon}</p>
+          <p className="f-bold">{youWon}</p>
           <p>{tried}</p>
           <p>{response}</p>
           
@@ -107,7 +111,11 @@ const Index = () => {
           </div>
 
           <Button 
-            onClick={() => {playAgain(setRandomWord, setCopyOfRandomWord, setValueOfInput, setButtonAvailability, setInputAvailability, setResponse, setWinningMessage, setTried, setLives, setRightLetters, setWrongLetters, setCopyOfWrongLetters, setWrongLettersInBox, setLiList)}} 
+            onClick={() => {
+              playAgain(setRandomWord, setCopyOfRandomWord, setValueOfInput, setButtonAvailability, setInputAvailability, setResponse, setWinningMessage, setTried, setLives, setRightLetters, setWrongLetters, setCopyOfWrongLetters, setWrongLettersInBox, setLiList)
+              sort(setRandomWord, setCopyOfRandomWord)
+              console.log(randomWord)
+            }} 
             text={'Jugar de nuevo'}/>
 
         </div>
