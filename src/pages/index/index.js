@@ -51,8 +51,23 @@ const Index = () => {
   // Variable that has the li with the letters of the random word
   const [liList, setLiList] = useState()
 
+  // Practice fetch api
+  const [planets, setPlanets] = useState({});
+
   useEffect(() => {
     sort(setRandomWord, setCopyOfRandomWord)
+
+    async function fetchData() {
+      const res = await fetch("https://swapi.co/api/planets/4/");
+      res
+        .json()
+        .then(res => setPlanets(res))
+    }
+
+    fetchData();
+
+    console.log('planets:', planets)
+
   }, [])
 
 
