@@ -13,7 +13,7 @@ const Index = () => {
   const [randomWord, setRandomWord] = useState()
 
   // Saves a copy of the random word chosen, and updates removing the letters that are already correct to avoid unnecesarry iterations.
-  const [copyOfRandomWord, setCopyOfRandomWord] = useState()
+  const [copyOfRandomWord, setCopyOfRandomWord] = useState([])
 
   // Saves the value of the input when onChange is triggered.
   const [valueOfInput, setValueOfInput] = useState('')
@@ -51,8 +51,11 @@ const Index = () => {
   // Variable that has the li with the letters of the random word
   const [liList, setLiList] = useState()
 
+  
   useEffect(() => {
+ 
     sort(setRandomWord, setCopyOfRandomWord)
+
   }, [])
 
 

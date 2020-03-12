@@ -2,14 +2,17 @@ import React from 'react';
 import './index.css';
 
 
-const words = ['sol', 'nube', 'lluvia']
-
 // Throws a random word.
-const sort = (setRandomWord, setCopyOfRandomWord) => {
-  let random = words[Math.floor(Math.random() * words.length)];
-  setRandomWord(random)
+const sort = async(setRandomWord, setCopyOfRandomWord) => {
 
-  let randomWordArray= random.split('')
+  const response = await fetch('https://random-word-api.herokuapp.com/word?number=1')
+  const data = await response.json()
+  const spanishWord = data[0]
+  console.log('spanishWord:', spanishWord)
+
+  setRandomWord(spanishWord)
+
+  let randomWordArray = spanishWord.split('')
   setCopyOfRandomWord(randomWordArray)
 }
 
@@ -180,7 +183,7 @@ const checkLetter = (setResponse, randomWord, copyOfRandomWord, valueOfInput, se
 // Restart the game
 const playAgain = (setRandomWord, setCopyOfRandomWord, setValueOfInput, setButtonAvailability, setInputAvailability, setResponse, setWinningMessage, setTried, setLives, setRightLetters, setWrongLetters, setCopyOfWrongLetters, setWrongLettersInBox, setLiList) => {
   setRandomWord()
-  setCopyOfRandomWord()
+  setCopyOfRandomWord([])
   setValueOfInput('')
   setButtonAvailability(true)
   setInputAvailability(false)
