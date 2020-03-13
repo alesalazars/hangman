@@ -25,7 +25,7 @@ const Index = () => {
   const [inputAvailability, setInputAvailability] = useState(false)
 
   // Updates with messages for the user as they interact with the app.
-  const [response, setResponse] = useState('Tienes 5 vidas para adivinar.')
+  const [response, setResponse] = useState('You have 5 lives to guess.')
 
   // Give winning message
   const [youWon, setWinningMessage] = useState('')
@@ -61,18 +61,10 @@ const Index = () => {
 
   return(
     <div className="index">
-      {console.log('renderizando')}
+      {console.log('rendering')}
 
       <div className="container">
         <div className="row">
-
-          {/* <Button 
-            onClick={ () => {
-              sort(setRandomWord, setCopyOfRandomWord)
-            }} 
-            text={'Sortear palabra'}
-            className={'start-btn'}  
-          /> */}
 
           <ul id="letters">
             {randomWord !== undefined ? drawWord(randomWord, setLiList, liList, rightLetters, copyOfRandomWord) : ''}
@@ -81,7 +73,7 @@ const Index = () => {
         </div>
 
         <div className="row">
-          <p className="mb-0">Ingresa una letra:</p>
+          <p className="mb-0">Enter a letter:</p>
 
           <Input 
             disabled={inputAvailability} 
@@ -97,7 +89,7 @@ const Index = () => {
             onClick={ () => {
               checkLetter(setResponse, randomWord, copyOfRandomWord, valueOfInput, setRightLetters, rightLetters, setCopyOfRandomWord, wrongLetters, setWrongLetters, setCopyOfWrongLetters, setTried, lives, setWinningMessage, setButtonAvailability, setValueOfInput, setInputAvailability, setLives, setWrongLettersInBox, copyOfWrongLetters, wrongLettersInBox)
             }}
-            text={'Chequea la letra'}
+            text={'Check the letter'}
             className={'check-btn'}
           />
         </div>
@@ -109,7 +101,7 @@ const Index = () => {
           <p>{response}</p>
           
           <div id="wrongLettersBox">
-            <h6>Letras erróneas:</h6>
+            <h6>Wrong letters:</h6>
             <p>{wrongLettersInBox}</p>
           </div>
 
@@ -119,7 +111,7 @@ const Index = () => {
               sort(setRandomWord, setCopyOfRandomWord)
               console.log(randomWord)
             }} 
-            text={'Jugar de nuevo'}/>
+            text={'Play again'}/>
 
         </div>
       </div>

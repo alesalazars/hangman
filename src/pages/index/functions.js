@@ -7,12 +7,12 @@ const sort = async(setRandomWord, setCopyOfRandomWord) => {
 
   const response = await fetch('https://random-word-api.herokuapp.com/word?number=1')
   const data = await response.json()
-  const spanishWord = data[0]
-  console.log('spanishWord:', spanishWord)
+  const englishWord = data[0]
+  console.log('englishWord:', englishWord)
 
-  setRandomWord(spanishWord)
+  setRandomWord(englishWord)
 
-  let randomWordArray = spanishWord.split('')
+  let randomWordArray = englishWord.split('')
   setCopyOfRandomWord(randomWordArray)
 }
 
@@ -65,13 +65,13 @@ const wroteInsideInput = (event, inputAvailability, setButtonAvailability, setVa
 const takeALife = (lives, setLives, setResponse) => {
   let reduceLife = lives - 1
   setLives(reduceLife)
-  let livesLeft = 'Vidas: ' + (reduceLife)
+  let livesLeft = 'Lives: ' + (reduceLife)
   setResponse(livesLeft)
 }
 
 // No lives left
 const zeroLives = (setResponse, setButtonAvailability, setInputAvailability, randomWord) => {
-  let noClicksLeft = 'Ya no quedan más vidas :( la palabra era ' + randomWord 
+  let noClicksLeft = 'No lives left :( the word was: ' + randomWord 
   setResponse(noClicksLeft)
   setButtonAvailability(true)
   setInputAvailability(true)
@@ -98,12 +98,6 @@ const handleKeyPress = (event, checkLetter, setResponse, randomWord, copyOfRando
 
 // Main interactions, check if the letter is in the word and show it
 const checkLetter = (setResponse, randomWord, copyOfRandomWord, valueOfInput, setRightLetters, rightLetters, setCopyOfRandomWord, wrongLetters, setWrongLetters, setCopyOfWrongLetters, setTried, lives, setWinningMessage, setButtonAvailability, setValueOfInput, setInputAvailability, setLives, setWrongLettersInBox, copyOfWrongLetters, wrongLettersInBox) => {
-  if(randomWord === undefined){
-    let haveToClickSortButtonFirst = 'Debes clickear el botón "Sortear palabra" antes de hacer click aquí...'
-    setResponse(haveToClickSortButtonFirst)
-  }else{
-    console.log('randomWord --> ', randomWord)
-    console.log('copyOfRandomWord --> ', copyOfRandomWord)
 
     if(valueOfInput !== ''){
 
@@ -144,7 +138,7 @@ const checkLetter = (setResponse, randomWord, copyOfRandomWord, valueOfInput, se
             console.log('recorriendo lista de letras correctas:', rightLetters)
             if(valueOfInput === rightLetters[j]){
               console.log('LA LETRA YA LA PROBÉ ANTES!!!!')
-              let alreadyGuessed = 'Ya ingresaste esta letra, prueba otra vez!'
+              let alreadyGuessed = 'You already tried this one, silly! Try again!'
               setTried(alreadyGuessed)
             }else if(valueOfInput !== rightLetters[j] && lives >= 2){
               takeALife(lives, setLives, setResponse, copyOfWrongLetters, valueOfInput, setCopyOfWrongLetters, setWrongLettersInBox, wrongLettersInBox)
@@ -167,7 +161,7 @@ const checkLetter = (setResponse, randomWord, copyOfRandomWord, valueOfInput, se
       }
   
       if(rightLetters.length === copyOfRandomWord.length){
-        let youWon = 'Ganaste! la palabra es: ' + randomWord
+        let youWon = 'You won! The word is: ' + randomWord
         setWinningMessage(youWon)
         setButtonAvailability(true)
         setInputAvailability(true)
@@ -177,7 +171,6 @@ const checkLetter = (setResponse, randomWord, copyOfRandomWord, valueOfInput, se
 
     }
 
-  }
 }
 
 // Restart the game
@@ -187,7 +180,7 @@ const playAgain = (setRandomWord, setCopyOfRandomWord, setValueOfInput, setButto
   setValueOfInput('')
   setButtonAvailability(true)
   setInputAvailability(false)
-  setResponse('Tienes 5 vidas para adivinar.')
+  setResponse('You have 5 lives to guess.')
   setWinningMessage('')
   setTried('')
   setLives(5)
