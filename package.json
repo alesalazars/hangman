@@ -1,6 +1,6 @@
 {
   "name": "hangman",
-  "homepage": "https://alesalazars.github.io/hangman/docs",
+  "homepage": "https://alesalazars.github.io/hangman",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
